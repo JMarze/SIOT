@@ -15,6 +15,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
+    <link rel="stylesheet" type="text/css" href="css/validado_min.css">
     <style>
         body {
             font-family: 'Lato';
@@ -67,6 +68,38 @@
                             </ul>
                         </li>
                     @endif
+                </ul>
+            </div>
+
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <ul class="nav nav-pills">
+                     <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Etapa de Inicio <span class="caret"></span>
+                        </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Llenar solicitud</a></li>
+                                <li><a href="#">Revision tecnica</a></li>
+                            </ul>
+                    </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Etapa de Ejecucion en Campo<span class="caret"></span>
+                        </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Acta de Apertura</a></li>
+                            </ul>
+                    </li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Etapa Final del Procedimiento<span class="caret"></span>
+                        </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Remision de Acta</a></li>
+                                <li><a href="#">Informe Tecnico</a></li>
+                                <li><a href="#">Informe Legal</a></li>
+                            </ul>
+                    </li>
                 </ul>
             </div>
         </div>
