@@ -44,22 +44,6 @@ ul.pagination a:hover, ul.pagination a:active, ul.pagination a:focus {
         font-weight: bold;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .highlight {
 	padding: 1px 5px;
 	background: #FFFFCC;
@@ -101,7 +85,7 @@ img {
 }
 /* FORM
 --------------------------------------------------------- */
-form {
+/*form {
 	margin: 0;
 	padding: 0;
 }
@@ -132,11 +116,11 @@ input, select, textarea, .inputbox {
 }
 
 * html .button {
-	padding: 2px 0 !important; /*IE 6*/
+	padding: 2px 0 !important; /*IE 6
 }
 
-*+html .button {
-	padding: 2px 0 !important; /*IE 7*/
+html .button {
+	padding: 2px 0 !important; /*IE 7
 }
 
 .inputbox {
@@ -146,7 +130,7 @@ input, select, textarea, .inputbox {
 
 .inputbox:hover, .inputbox:focus {
 	background: #FFFFCC;
-}
+}*/
 
 
 
@@ -268,10 +252,11 @@ a {
 }
 
 
-.jqueryslidemenu{font:normal 10px Arial, Helvetica, sans-serif;background:transparent url(../images/botonera_principal.png) repeat-x;width:100%;}
+.jquerybanner{font:normal 14px Arial, Helvetica, sans-serif;background:transparent url(../images/btn_img.png) repeat-x;width:100%;}
+.jqueryslidemenu{font:normal 14px Arial, Helvetica, sans-serif;background:transparent url(../images/btn_img.png) repeat-x;width:100%;}
 .jqueryslidemenu ul{margin:0;padding:0;list-style-type:none;}
 .jqueryslidemenu ul li{position:relative;display:inline;float:left;}
-.jqueryslidemenu ul li a{display:block;background:transparent url(../images/botonera_principal.png) repeat-x;padding:12.5px 10px;border-right:1px solid #cccccc;color:#666666;text-decoration:none;z-index:5000;}
+.jqueryslidemenu ul li a{display:block;background:transparent url(../images/btn_img.png) repeat-x;padding:12.5px 10px;border-right:1px solid #cccccc;color:#666666;text-decoration:none;z-index:5000;}
 * html .jqueryslidemenu ul li a{display:inline-block;}
 .jqueryslidemenu ul li a:link, .jqueryslidemenu ul li a:visited{color:#666666;}
 .jqueryslidemenu ul li a:hover{background:#ccc;color:#333;}
@@ -280,7 +265,7 @@ a {
 .jqueryslidemenu ul li ul li ul{top:0;}
 .jqueryslidemenu ul li ul li a{font:normal 10px Verdana;width:200px;margin:0;margin-left:0;border-top:1px solid #ccc;border-width:1px 0 0 0;background:#f3f3f3;position:relative;top:0;left:-1px;}
 .jqueryslidemenu ul li ul li a:hover{background:#ccc;color:#333;border-left:0 solid #000;border-top:1px solid #ccc;border-right:0 solid #000;border-bottom:0 solid #000;width:200px;}
-.downarrowclass{position:absolute;top:12px;right:7px;}
+/*.downarrowclass{position:absolute;top:12px;right:7px;}
 .rightarrowclass{position:absolute;top:6px;right:5px;}
 .botonera_lateral_uno{font:normal 14px Arial, Helvetica, sans-serif;}
 .botonera_lateral_uno ul, li{list-style-type:none;}
@@ -600,4 +585,4 @@ img.sample{padding:1px;border:1px solid #999;}
 .mosaic-overlay a{text-decoration:none;color:#fff;}
 .flip_container{width:190px;height:220px;background-color:#fff;}
 #videoPlayer{background-color:#999;}
-#audioPlayer{background-color:#999;}
+#audioPlayer{background-color:#999;}*/

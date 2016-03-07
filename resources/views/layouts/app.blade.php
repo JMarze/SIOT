@@ -27,7 +27,7 @@
     </style>
 </head>
 <body id="app-layout">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default jquerybanner">
         <div class="container">
             <div class="navbar-header">
 
@@ -74,7 +74,7 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <ul class="nav nav-pills">
                      <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle jqueryslidemenu" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             Etapa de Inicio <span class="caret"></span>
                         </a>
                             <ul class="dropdown-menu">
@@ -83,7 +83,7 @@
                             </ul>
                     </li>
                     <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle jqueryslidemenu" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             Etapa de Ejecucion en Campo<span class="caret"></span>
                         </a>
                             <ul class="dropdown-menu">
@@ -91,7 +91,7 @@
                             </ul>
                     </li>
                     <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle jqueryslidemenu" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             Etapa Final del Procedimiento<span class="caret"></span>
                         </a>
                             <ul class="dropdown-menu">
