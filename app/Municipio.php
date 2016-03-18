@@ -18,4 +18,8 @@ class Municipio extends Model
     public function provincia(){
         return $this->belongsTo('App\Provincia');
     }
+
+    public function solicitudes(){
+        return $this->hasMany('App\Solicitud');
+    }
 }
