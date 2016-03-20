@@ -1,31 +1,32 @@
-# Laravel PHP Framework
+# SIOT
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Sistema de Información de Organización Territorial - SIOT (Bolivia)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Procedimiento de Conciliación Administrativa para Delimitación Interdepartamental
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+### Etapa de Inicio
 
-## Official Documentation
+- [ ] Presentación y Contenido de la Solicitud
+> Implementación de la Solicitud.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+- [ ] Revisión Técnico Legal por Límite y/o tramo
+- [ ] Solicitud de Información Adicional
+- [ ] Nota de Admisión
+- [ ] Nota de Subsanación
+- [ ] Notificación al Solicitante
+- [ ] Notificaciones a los Colindantes
+- [ ] Pronunciamiento de los Colindantes
+- [ ] Informe del Pronunciamiento
+- [ ] Reunión de Etapa de Inicio
 
-## Contributing
+### Etapa de Ejecución en Campo
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+### Etapa Final del Procedimiento
 
-## Security Vulnerabilities
+## Procedimiento de Conciliación Administrativa para Delimitación Intradepartamental
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Etapa de Inicio
 
-## License
+### Etapa de Ejecución en Campo
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
-
-## SIOT
-
-Sistema de Información para la Organización Territorial (Bolivia)
+### Etapa Final del Procedimiento
