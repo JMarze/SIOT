@@ -22,6 +22,13 @@ class CreateSolicitudesTable extends Migration
             $table->timestamp('created_at');
             $table->softDeletes();
         });
+
+        Schema::create('solicitud_municipio', function (Blueprint $table) {
+            $table->string('municipio_codigo', 6)->index();
+            $table->foreign('municipio_codigo')->references('codigo')->on('municipios');
+            $table->integer('solicitud_id')->unsigned();
+            $table->foreign('solicitud_id')->references('id')->on('solicitudes');
+        });
     }
 
     /**
@@ -31,6 +38,7 @@ class CreateSolicitudesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('solicitud_municipio');
         Schema::drop('solicitudes');
     }
 }
