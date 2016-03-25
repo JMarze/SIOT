@@ -34,13 +34,10 @@ class EtapaInicio extends Model
     public function subsanacion(){
         return $this->hasOne('App\Subsanacion');
     }
-
     public function limite_tramo(){
         return $this->hasMany('App\LimiteTramo');
-
     }
     public function digital(){
         return $this->belongsTo('App\Digital');
-
     }
 }
