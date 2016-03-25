@@ -18,7 +18,13 @@ class EtapaInicio extends Model
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    // Relationships
     public function colindantes(){
         return $this->hasMany('App\Colindante');
+    }
+
+    public function adicional(){
+        return $this->hasOne('App\Adicional');
+
     }
 }
