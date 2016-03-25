@@ -16,4 +16,7 @@ class Solicitud extends Model
     public function municipios(){
         return $this->belongsToMany('App\Municipio', 'solicitud_municipio', 'solicitud_id', 'municipio_codigo');
     }
+    public function etapa_inicio(){
+        return $this->belongsTo('App\EtapaInicio');
+    }
 }

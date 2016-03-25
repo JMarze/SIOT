@@ -22,9 +22,16 @@ class EtapaInicio extends Model
     public function colindantes(){
         return $this->hasMany('App\Colindante');
     }
-
+    public function solicitud(){
+        return $this->hasOne('App\Solicitud');
+    }
     public function adicional(){
         return $this->hasOne('App\Adicional');
-
+    }
+    public function admision(){
+        return $this->hasOne('App\Admision');
+    }
+    public function subsanacion(){
+        return $this->hasOne('App\Subsanacion');
     }
 }
