@@ -14,7 +14,12 @@ class CreateLimiteTramoTable extends Migration
     {
         Schema::create('limite_tramo', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->double('distancia', 9, 3);
+            $table->integer('vertices');
+            $table->text('municipios');
+
+            $table->string('etapa_inicio_codigo', 40)->index();
+            $table->foreign('etapa_inicio_codigo')->references('codigo')->on('etapa_inicio');
         });
     }
 

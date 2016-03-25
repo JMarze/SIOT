@@ -14,7 +14,12 @@ class CreateAdmisionesTable extends Migration
     {
         Schema::create('admisiones', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('nota', 25);
+
+            $table->timestamp('created_at');
+
+            $table->string('etapa_inicio_codigo', 40)->index();
+            $table->foreign('etapa_inicio_codigo')->references('codigo')->on('etapa_inicio');
         });
     }
 
