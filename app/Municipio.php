@@ -20,6 +20,6 @@ class Municipio extends Model
     }
 
     public function solicitudes(){
-        return $this->hasMany('App\Solicitud');
+        return $this->belongsToMany('App\Solicitud', 'solicitud_municipio', 'municipio_codigo', 'solicitud_id');
     }
 }
