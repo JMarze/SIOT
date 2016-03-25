@@ -17,4 +17,9 @@ class EtapaInicio extends Model
     protected $fillable = ['codigo', 'informe_tecnico_legal', 'informe_pronunciamiento', 'acta_cierre', 'estado', 'fecha_estado'];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+
+    // Relationships
+    public function adicional(){
+        return $this->hasOne('App\Adicional');
+    }
 }
