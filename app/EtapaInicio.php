@@ -27,4 +27,13 @@ class EtapaInicio extends Model
         return $this->hasOne('App\Adicional');
 
     }
+
+    public function limite_tramo(){
+        return $this->hasMany('App\LimiteTramo');
+
+    }
+    public function digital(){
+        return $this->belongsTo('App\Digital');
+
+    }
 }
