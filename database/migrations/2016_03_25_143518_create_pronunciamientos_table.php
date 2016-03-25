@@ -14,7 +14,15 @@ class CreatePronunciamientosTable extends Migration
     {
         Schema::create('pronunciamientos', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('pronunciamiento', 25)->nullable();
+            $table->string('documentos_observaciones', 25)->nullable();
+            $table->string('compromiso_pago', 25);
+            $table->enum('estado', ['conformidad', 'observacion'])->nullable();
+
+            $table->integer('colindante_id')->unsigned();
+            $table->foreign('colindante_id')->references('id')->on('colindantes');
+
+            $table->timestamp('created_at');
         });
     }
 
