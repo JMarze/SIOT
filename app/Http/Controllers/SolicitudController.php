@@ -108,36 +108,46 @@ class SolicitudController extends Controller
 
     public function uploadSolicitud(Request $request, $id)
     {
-
-        /*if ($request->ajax()){
+        $this->validate($request, [
+            'documentos_solicitante' => 'required|mimes:zip,rar',
+        ]);
+        if ($request->ajax()){
             try{
                 $solicitud = Solicitud::find($id);
-                $solicitud->documentos_solicitante = $request->solicitud;
-                $carrera->update();
-                flash()->warning('Se modificó la carrera: '.$carrera->nombre);
+                $solicitud->documentos_solicitante = $request->documentos_solicitante;
+                $solicitud->update();
+                flash()->success('El archivo se subió exitosamente...');
                 return response()->json([
-                    'mensaje' => $carrera->codigo,
+                    'mensaje' => $solicitud->id,
                 ]);
             }catch(\Exception $ex){
-                flash()->error('Wow!!! se presentó un problema al modificar... Intenta más tarde');
+                flash()->error('Se presentó un problema al subir el archivo... Intenta más tarde');
                 return response()->json([
                     'mensaje' => $ex->getMessage(),
                 ]);
             }
-        }*/
-        /*$solicitud = new Solicitud($request->all());
-        try{
-            $solicitud->save();
-            $solicitud->municipios()->attach($request->municipios);
-            flash()->success('Su solicitud fué enviada...');
-        }catch(\Exception $ex){
-            flash()->error('Su solicitud no fué enviada. Ocurrió un problema en la transacción...' . $ex->getMessage());
-        }finally{
-            return redirect()->route('solicitud.index');
-        }*/
-        return response()->json([
-            'mensaje' => $request->all(),
-            'id' => $id
+        }
+    }
+
+    public function uploadTecnico(Request $request, $id){
+        $this->validate($request, [
+            'documentos_tecnicos' => 'required|mimes:zip,rar',
         ]);
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($id);
+                $solicitud->documentos_tecnicos = $request->documentos_tecnicos;
+                $solicitud->update();
+                flash()->success('El archivo se subió exitosamente...');
+                return response()->json([
+                    'mensaje' => $solicitud->id,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al subir el archivo... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
+        }
     }
 }

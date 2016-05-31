@@ -90,7 +90,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
 
     <!-- JQuery Form -->
-    <!--<script src="http://malsup.github.com/jquery.form.js"></script>-->
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 
     @yield('script')

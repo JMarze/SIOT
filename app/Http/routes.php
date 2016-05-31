@@ -39,5 +39,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('solicitud', 'SolicitudController');
 
     // Upload Solicitud
-    Route::put('solicitud/upload/{solicitud}', 'SolicitudController@uploadSolicitud');
+    Route::put('solicitud/solicitante/{solicitud}', 'SolicitudController@uploadSolicitud')->name('solicitud.upload.solicitante');
+    Route::put('solicitud/tecnico/{solicitud}', 'SolicitudController@uploadTecnico')->name('solicitud.upload.tecnico');
 });

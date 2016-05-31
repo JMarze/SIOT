@@ -26,12 +26,12 @@ class Solicitud extends Model
 
     // Mutators
     public function setDocumentosSolicitanteAttribute($file_solicitante){
-        $fileName = Carbon::now()->year . Carbon::now()->month . Carbon::now()->day . "_" . Carbon::now()->hour . Carbon::now()->minute . Carbon::now()->second . "." . $file_solicitante->getClientOriginalExtension();
+        $fileName = $this->attributes['id'] . "-DS" . Carbon::now()->year . Carbon::now()->month . Carbon::now()->day . "_" . Carbon::now()->hour . Carbon::now()->minute . Carbon::now()->second . "." . $file_solicitante->getClientOriginalExtension();
         $this->attributes['documentos_solicitante'] = $fileName;
         \Storage::disk('local')->put($fileName, \File::get($file_solicitante));
     }
     public function setDocumentosTecnicosAttribute($file_tecnicos){
-        $fileName = Carbon::now()->year . Carbon::now()->month . Carbon::now()->day . "_" . Carbon::now()->hour . Carbon::now()->minute . Carbon::now()->second . "." . $file_tecnicos->getClientOriginalExtension();
+        $fileName = $this->attributes['id'] . "-DT" . Carbon::now()->year . Carbon::now()->month . Carbon::now()->day . "_" . Carbon::now()->hour . Carbon::now()->minute . Carbon::now()->second . "." . $file_tecnicos->getClientOriginalExtension();
         $this->attributes['documentos_tecnicos'] = $fileName;
         \Storage::disk('local')->put($fileName, \File::get($file_tecnicos));
     }

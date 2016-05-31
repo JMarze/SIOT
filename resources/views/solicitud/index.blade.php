@@ -36,36 +36,26 @@
                         @endforeach
                     </div>
                     <div class="col-md-6">
-                        @if($solicitud->documentos_solicitante == null)
-                        <div class="form-group">
-                            {!! Form::label('solicitud_'.$solicitud->id, 'Documentos del Solicitante', ['class' => 'control-label']) !!}
-                            <input type="file" id="solicitud_{{ $solicitud->id }}" style="display: none;" onchange="fileSelected({{ $solicitud->id }})"/>
-                            <span class="help-block">
-                                <span id="nombre_{{ $solicitud->id }}" class="label label-default"></span>
-                                <span id="progreso_{{ $solicitud->id }}" class="label label-default"></span>
-                            </span>
-                            <button class="btn btn-success select-file-solicitud" type="button" data-id="{{ $solicitud->id }}">
-                                <i class="fa fa-btn fa-file-zip-o"></i>Elegir Archivo
-                            </button>
-                            <button class="btn btn-primary upload-file-solicitud" type="button" data-id="{{ $solicitud->id }}" style="display: none;">
-                                <i class="fa fa-btn fa-upload"></i>Subir Archivo
+                        {!! Form::label('documentos_solicitante', 'Documentos del Solicitante', ['class' => 'control-label']) !!}
+                        @if($solicitud->documentos_solicitante == null || $solicitud->documentos_solicitante == '')
+                        <div class="btn-group" role="group" aria-label="Center Align">
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
+                                <i class="fa fa-btn fa-upload"></i>Subir .Zip
                             </button>
                         </div>
+                        @else
+                        <h5><span class="label label-default">{{ $solicitud->documentos_solicitante }}</span></h5>
                         @endif
 
-                        @if($solicitud->documentos_tecnicos == null)
-                        {!! Form::open(['route' => ['solicitud.update', $solicitud->id], 'method' => 'PUT', 'class' => 'form-vertical']) !!}
-                        <div class="form-group">
-                            {!! Form::label('documentos_tecnicos', 'Documentos Técnicos', ['class' => 'control-label']) !!}
-                            {!! Form::file('documentos_tecnicos', ['class' => 'form-control', 'style' => 'display: none;']) !!}
-                            <button class="btn btn-success select-file-solicitud" type="button">
-                                <i class="fa fa-btn fa-file-zip-o"></i>
-                            </button>
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fa fa-btn fa-upload"></i>
+                        {!! Form::label('documentos_tecnicos', 'Documentos Técnicos', ['class' => 'control-label']) !!}
+                        @if($solicitud->documentos_tecnicos == null || $solicitud->documentos_tecnicos == '')
+                        <div class="btn-group" role="group" aria-label="Center Align">
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
+                                <i class="fa fa-btn fa-upload"></i>Subir .Zip
                             </button>
                         </div>
-                        {!! Form::close() !!}
+                        @else
+                        <h5><span class="label label-default">{{ $solicitud->documentos_tecnicos }}</span></h5>
                         @endif
                     </div>
                 </div>
@@ -91,6 +81,10 @@
     </div>
     @endif
 </div>
+
+@include('solicitud.partial.uploadsolicitante')
+@include('solicitud.partial.uploadtecnico')
+
 @endsection
 
 @section('script')
@@ -100,35 +94,21 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
-$(document).on('click', '.select-file-solicitud', function(){
-    var solicitudId = $(this).data('id');
-    var solicitudFile = $(this).siblings('#solicitud_'+solicitudId);
-    solicitudFile.click();
+// Cambiar Id de la Solicitud
+$(document).on('click', 'button[data-target="#upload_solicitante"]', function(e){
+    var idSolicitud = $(this).attr('data-id');
+    $('#form-upload-solicitante').attr('data-id', idSolicitud);
+});
+$(document).on('click', 'button[data-target="#upload_tecnico"]', function(e){
+    var idSolicitud = $(this).attr('data-id');
+    $('#form-upload-tecnico').attr('data-id', idSolicitud);
 });
 
-$(document).on('click', '.upload-file-solicitud', function(){
-    var solicitudId = $(this).data('id');
-    var file = $('#solicitud_'+solicitudId)[0].files[0];
-    var formData = new FormData(this);
-    formData.append('file', file);
-    var ajaxSolicitud = new XMLHttpRequest();
-
-    ajaxSolicitud.upload.addEventListener('progress', function(event){
-        var progreso = (event.loaded / event.total) * 100;
-        $('#progreso_'+solicitudId).html('Progreso: ' + Math.round(progreso) + '%');
-    }, false);
-
-    ajaxSolicitud.open('PUT', '/solicitud/upload/'+solicitudId, true);
-    ajaxSolicitud.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-    ajaxSolicitud.send(formData);
-});
-
-function fileSelected(id){
-    var file = $('#solicitud_'+id)[0].files[0];
-    $('button.select-file-solicitud[data-id='+id+']').css('display', 'none');
-    $('button.upload-file-solicitud[data-id='+id+']').css('display', 'block');
-    $('#nombre_'+id).html('Archivo: ' + file.name);
-    $('#progreso_'+id).html('Progreso: 0%');
+// Reset Form
+function resetForm(obj){
+    obj.find('form')[0].reset();
+    $('.help-block>strong').html('');
+    $('.has-error').removeClass('has-error');
 }
 </script>
 @endsection
