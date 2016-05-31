@@ -14,7 +14,7 @@ class CreateMunicipiosTable extends Migration
     {
         Schema::create('municipios', function (Blueprint $table) {
             $table->string('codigo', 6)->primary();
-            $table->string('nombre', 50)->unique();
+            $table->string('nombre', 50);
             $table->enum('simbologia', ['Asamblea', 'CCDS', 'CCL', 'CDS', 'CL', 'CSD', 'CSL', 'DS', 'LC', 'Mapa', 'MD', 'MDS', 'ML', 'MR', 'MSL'])->nullable();
             $table->date('fecha_legal')->nullable();
             $table->integer('ley_creacion')->nullable();

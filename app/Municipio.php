@@ -16,7 +16,7 @@ class Municipio extends Model
 
     // Relationships
     public function provincia(){
-        return $this->belongsTo('App\Provincia');
+        return $this->belongsTo('App\Provincia', 'provincia_codigo', 'codigo');
     }
 
     public function solicitudes(){

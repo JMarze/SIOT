@@ -20,6 +20,6 @@ class Provincia extends Model
     }
 
     public function departamento(){
-        return $this->belongsTo('App\Departamento');
+        return $this->belongsTo('App\Departamento', 'departamento_codigo', 'codigo');
     }
 }

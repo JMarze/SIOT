@@ -26,10 +26,6 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-    //
-});
-
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
@@ -38,4 +34,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    // Solicitud
+    Route::resource('solicitud', 'SolicitudController');
+
+    // Upload Solicitud
+    Route::put('solicitud/upload/{solicitud}', 'SolicitudController@uploadSolicitud');
 });
