@@ -5,7 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Crear Solicitud de Delimitación Territorial</div>
+                <div class="panel-heading">
+                    <i class="fa fa-btn fa-map-marker"></i>Crear Solicitud de Delimitación Territorial
+                </div>
                 <div class="panel-body">
                 {!! Form::open(array('id' => 'form-solicitud', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST', 'route' => 'solicitud.store')) !!}
                 <div class="form-group{{ $errors->has('nombre_solicitante')?' has-error':'' }}">
