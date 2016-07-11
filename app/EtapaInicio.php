@@ -37,7 +37,7 @@ class EtapaInicio extends Model
     public function limite_tramo(){
         return $this->hasMany('App\LimiteTramo');
     }
-    public function digital(){
-        return $this->belongsTo('App\Digital');
+    public function documentosDigitales(){
+        return $this->belongsToMany('App\DocumentoDigital', 'etapa_inicio_documento_digital', 'etapa_inicio_codigo', 'documento_digital_id')->withPivot('cumple');
     }
 }

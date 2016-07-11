@@ -3,45 +3,84 @@
 @section('content')
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-md-2 col-md-offset-10 text-right">
-                    <a class="btn btn-success" href="{!! route('solicitud.create') !!}">
-                        <i class="fa fa-btn fa-plus"></i>Nueva Solicitud
-                    </a>
-                </div>
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-panel" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{{ route('solicitud.index') }}" class="navbar-brand">
+                    <i class="fa fa-btn fa-external-link"></i>Solicitudes
+                </a>
             </div>
-        </div>
+            <div class="collapse navbar-collapse" id="menu-panel">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ route('solicitud.create') }}">
+                            <i class="fa fa-btn fa-plus"></i>Nueva Solicitud
+                        </a>
+                    </li>
+               </ul>
+            </div>
+        </nav>
 
         <div class="panel-body">
             @if($solicitudes->total() > 0)
             <div class="row">
                 @foreach($solicitudes as $solicitud)
-                <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h2 class="panel-title text-center">
-                            @if($solicitud->tipo_limite == 'D')
-                            D - Interdepartamental
-                            @elseif($solicitud->tipo_limite == 'M')
-                            M - Intradepartamental
-                            @else
-                            No definido
-                            @endif
-                            </h2>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud enviada" data-content="Su solicitud fué enviada satisfactoriamente el {{ $solicitud->created_at->format('d/m/Y') }}, ahora debe esperar 10 días hábiles para la generación de su código. Gracias." data-container="body">
+                                        <i class="fa fa-send"></i>
+                                    </button>
+                                    @else
+                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud no enviada" data-content="Su solicitud aún no fué enviada, debe subir los archivos digitales comprimidos para que su solicitud sea enviada. Gracias." data-container="body">
+                                        <i class="fa fa-warning"></i>
+                                    </button>
+                                    @endif
+                                </div>
+                                <div class="col-md-8">
+                                    <h2 class="panel-title text-center" style="margin: 6px 0;">
+                                    @if($solicitud->tipo_limite == 'D')
+                                    D - Interdepartamental
+                                    @elseif($solicitud->tipo_limite == 'M')
+                                    M - Intradepartamental
+                                    @else
+                                    No definido
+                                    @endif
+                                    </h2>
+                                </div>
+                                <div class="col-md-2">
+                                    @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
+                                    <a href="{{ route('etapa_inicio.create', ['solicitud' => $solicitud->id]) }}" class="btn btn-sm btn-success" title="Revisar solicitud">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                    @else
+                                    <a href="#" class="btn btn-sm btn-default" title="Eliminar solicitud">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                         <div class="panel-body">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <h4>{{ $solicitud->nombre_solicitante }}</h4>
                                 @foreach($solicitud->municipios as $municipio)
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="{{ $municipio->provincia->departamento->nombre }} - {{ $municipio->provincia->nombre }}">{{ $municipio->nombre }}</button>
                                 @endforeach
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 {!! Form::label('documentos_solicitante', 'Documentos del Solicitante', ['class' => 'control-label']) !!}
                                 @if($solicitud->documentos_solicitante == null || $solicitud->documentos_solicitante == '')
                                 <div class="btn-group" role="group" aria-label="Center Align">
-                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
+                                    <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
                                         <i class="fa fa-btn fa-upload"></i>Subir .Zip
                                     </button>
                                 </div>
@@ -52,7 +91,7 @@
                                 {!! Form::label('documentos_tecnicos', 'Documentos Técnicos', ['class' => 'control-label']) !!}
                                 @if($solicitud->documentos_tecnicos == null || $solicitud->documentos_tecnicos == '')
                                 <div class="btn-group" role="group" aria-label="Center Align">
-                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
+                                    <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
                                         <i class="fa fa-btn fa-upload"></i>Subir .Zip
                                     </button>
                                 </div>
@@ -62,7 +101,24 @@
                             </div>
                         </div>
                         <div class="panel-footer">
-                            <h2 class="panel-title text-center">Solicitado {{ $solicitud->created_at->diffForHumans() }}<br/>({{ $solicitud->created_at->format('d/m/Y') }})</h2>
+                            <h2 class="panel-title text-center">
+                            @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
+                                Su solicitud fué enviada, se necesitan:<br/>
+                                <span class="label label-default"><i class="fa fa-btn fa-clock-o"></i>10 días hábiles para su revisión.</span>
+                                <br/><br/>
+                                La fecha límite para este proceso es:<br/>
+                                <span class="label label-default"><i class="fa fa-btn fa-calendar"></i>{{ $solicitud->created_at->addWeekdays(10)->format('d/m/Y') }}</span>
+                                <br/><br/>
+                                <span class="label label-primary">
+                                    <strong>Estado: </strong><i class="fa fa-btn fa-clock-o"></i>Revisando...
+                                </span>
+                            @else
+                                Suba los documentos digitales para que su solicitud sea enviada. <br/>
+                                <span class="label label-warning">
+                                    <strong>Estado: </strong><i class="fa fa-btn fa-warning"></i>No enviado
+                                </span>
+                            @endif
+                            </h2>
                         </div>
                     </div>
                 </div>
@@ -78,11 +134,9 @@
             </div>
         </div>
         @else
-        <div class="container">
-            <div class="alert alert-warning" role="alert">
-                <i class="fa fa-btn fa-database"></i>
-                <strong>Mensaje:</strong> No se encontraron solicitudes en la base de datos. Intenta <a href="{{ route('solicitud.create') }}" class="alert-link">agregar una nueva solicitud</a>
-            </div>
+        <div class="alert alert-warning" role="alert">
+            <i class="fa fa-btn fa-database"></i>
+            <strong>Mensaje:</strong> No se encontraron solicitudes en la base de datos. Intenta <a href="{{ route('solicitud.create') }}" class="alert-link">agregar una nueva solicitud</a>
         </div>
         @endif
     </div>
@@ -97,7 +151,8 @@
 @parent
 <script>
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 });
 
 // Cambiar Id de la Solicitud

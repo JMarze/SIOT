@@ -41,4 +41,9 @@ Route::group(['middleware' => 'web'], function () {
     // Upload Solicitud
     Route::put('solicitud/solicitante/{solicitud}', 'SolicitudController@uploadSolicitud')->name('solicitud.upload.solicitante');
     Route::put('solicitud/tecnico/{solicitud}', 'SolicitudController@uploadTecnico')->name('solicitud.upload.tecnico');
+
+    // Etapa Inicio
+    Route::resource('etapa_inicio', 'EtapaInicioController');
+    Route::get('etapa_inicio/{solicitud}/descargar_solicitante', 'EtapaInicioController@descargarSolicitante')->name('etapa_inicio.descargar_solicitante');
+    Route::get('etapa_inicio/{solicitud}/descargar_tecnico', 'EtapaInicioController@descargarTecnico')->name('etapa_inicio.descargar_tecnico');
 });

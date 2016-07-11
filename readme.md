@@ -6,8 +6,9 @@ Sistema de Información de Organización Territorial - SIOT (Bolivia)
 
 ### Etapa de Inicio
 
-- [ ] Presentación y Contenido de la Solicitud
+- [x] Presentación y Contenido de la Solicitud
 > Implementación de la Solicitud.
+> Revisión de documentación (cumple y no cumple).
 
 - [ ] Revisión Técnico Legal por Límite y/o tramo
 - [ ] Solicitud de Información Adicional

@@ -79,6 +79,9 @@
                     <li><a href="#">Etapa de Final</a></li>
                     <li><a href="#">Demarcación</a></li>
                     <li><a href="#">Ley</a></li>
+                    <li><a href="#">Geoserver</a></li>
+                    <li><a href="#">Geonetwork</a></li>
+                    <li><a href="#">Visualizador</a></li>
                 </ul>
 
 
