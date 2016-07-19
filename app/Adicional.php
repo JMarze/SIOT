@@ -8,6 +8,8 @@ class Adicional extends Model
 {
     protected $table = "adicionales";
 
+    public $timestamps =false;
+
     protected $fillable = ['documentos', 'etapa_inicio_codigo'];
 
     protected $dates = ['created_at'];

@@ -14,9 +14,16 @@ class EtapaInicio extends Model
     protected $primaryKey = 'codigo';
     public $incrementing = false;
 
-    protected $fillable = ['codigo', 'informe_tecnico_legal', 'informe_pronunciamiento', 'acta_cierre', 'estado', 'fecha_estado'];
+    protected $fillable = ['codigo', 'informe_tecnico_legal', 'informe_pronunciamiento', 'acta_cierre', 'estado', 'fecha_estado', 'solicitud_id'];
 
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at', 'fecha_estado'];
+
+    // Mutators
+    public function setInformeTecnicoLegalAttribute($file_informe){
+        $fileName = $this->attributes['solicitud_id'] . "-InformeTecLegal" . "." . $file_informe->getClientOriginalExtension();
+        $this->attributes['informe_tecnico_legal'] = $fileName;
+        \Storage::disk('local')->put($fileName, \File::get($file_informe));
+    }
 
     // Relationships
     public function colindantes(){

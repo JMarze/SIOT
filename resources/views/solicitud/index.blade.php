@@ -35,6 +35,14 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-md-2">
+                                @if($solicitud->etapa_inicio != null)
+
+                                    <button type="button" class="btn btn-sm btn-success" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud revisada" data-content="Su solicitud fué revisada satisfactoriamente el {{ $solicitud->etapa_inicio->created_at->format('d/m/Y') }}, ahora cuenta con un código único. Gracias." data-container="body">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </button>
+
+                                @else
+
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
                                     <button type="button" class="btn btn-sm btn-primary" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud enviada" data-content="Su solicitud fué enviada satisfactoriamente el {{ $solicitud->created_at->format('d/m/Y') }}, ahora debe esperar 10 días hábiles para la generación de su código. Gracias." data-container="body">
                                         <i class="fa fa-send"></i>
@@ -44,6 +52,8 @@
                                         <i class="fa fa-warning"></i>
                                     </button>
                                     @endif
+
+                                @endif
                                 </div>
                                 <div class="col-md-8">
                                     <h2 class="panel-title text-center" style="margin: 6px 0;">
@@ -57,6 +67,8 @@
                                     </h2>
                                 </div>
                                 <div class="col-md-2">
+                                @if($solicitud->etapa_inicio == null)
+
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
                                     <a href="{{ route('etapa_inicio.create', ['solicitud' => $solicitud->id]) }}" class="btn btn-sm btn-success" title="Revisar solicitud">
                                         <i class="fa fa-check"></i>
@@ -66,6 +78,8 @@
                                         <i class="fa fa-trash"></i>
                                     </a>
                                     @endif
+
+                                @endif
                                 </div>
                             </div>
                         </div>
@@ -78,45 +92,95 @@
                             </div>
                             <div class="col-md-7">
                                 {!! Form::label('documentos_solicitante', 'Documentos del Solicitante', ['class' => 'control-label']) !!}
-                                @if($solicitud->documentos_solicitante == null || $solicitud->documentos_solicitante == '')
-                                <div class="btn-group" role="group" aria-label="Center Align">
-                                    <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
-                                        <i class="fa fa-btn fa-upload"></i>Subir .Zip
-                                    </button>
-                                </div>
+
+                                @if($solicitud->etapa_inicio == null)
+
+                                    @if($solicitud->documentos_solicitante == null || $solicitud->documentos_solicitante == '')
+                                    <div class="btn-group" role="group" aria-label="Center Align">
+                                        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
+                                            <i class="fa fa-btn fa-upload"></i>Subir .Zip
+                                        </button>
+                                    </div>
+                                    @else
+                                    <h5><span class="label label-default">{{ $solicitud->documentos_solicitante }}</span></h5>
+                                    @endif
+
                                 @else
-                                <h5><span class="label label-default">{{ $solicitud->documentos_solicitante }}</span></h5>
+
+                                <h5>
+                                    <span class="label label-success">
+                                        <i class="fa fa-btn fa-check"></i>Revisado
+                                    </span>
+                                </h5>
+
                                 @endif
 
                                 {!! Form::label('documentos_tecnicos', 'Documentos Técnicos', ['class' => 'control-label']) !!}
-                                @if($solicitud->documentos_tecnicos == null || $solicitud->documentos_tecnicos == '')
-                                <div class="btn-group" role="group" aria-label="Center Align">
-                                    <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
-                                        <i class="fa fa-btn fa-upload"></i>Subir .Zip
-                                    </button>
-                                </div>
+
+                                @if($solicitud->etapa_inicio == null)
+
+                                    @if($solicitud->documentos_tecnicos == null || $solicitud->documentos_tecnicos == '')
+                                    <div class="btn-group" role="group" aria-label="Center Align">
+                                        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
+                                            <i class="fa fa-btn fa-upload"></i>Subir .Zip
+                                        </button>
+                                    </div>
+                                    @else
+                                    <h5><span class="label label-default">{{ $solicitud->documentos_tecnicos }}</span></h5>
+                                    @endif
+
                                 @else
-                                <h5><span class="label label-default">{{ $solicitud->documentos_tecnicos }}</span></h5>
+
+                                <h5>
+                                    <span class="label label-success">
+                                        <i class="fa fa-btn fa-check"></i>Revisado
+                                    </span>
+                                </h5>
+
                                 @endif
                             </div>
                         </div>
                         <div class="panel-footer">
                             <h2 class="panel-title text-center">
-                            @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
-                                Su solicitud fué enviada, se necesitan:<br/>
-                                <span class="label label-default"><i class="fa fa-btn fa-clock-o"></i>10 días hábiles para su revisión.</span>
-                                <br/><br/>
-                                La fecha límite para este proceso es:<br/>
-                                <span class="label label-default"><i class="fa fa-btn fa-calendar"></i>{{ $solicitud->created_at->addWeekdays(10)->format('d/m/Y') }}</span>
-                                <br/><br/>
-                                <span class="label label-primary">
-                                    <strong>Estado: </strong><i class="fa fa-btn fa-clock-o"></i>Revisando...
-                                </span>
+
+                            @if($solicitud->etapa_inicio == null)
+
+                                @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
+                                    Su solicitud fué enviada, se necesitan:<br/>
+                                    <span class="label label-default"><i class="fa fa-btn fa-clock-o"></i>10 días hábiles para su revisión.</span>
+                                    <br/><br/>
+                                    La fecha límite para este proceso es:<br/>
+                                    <span class="label label-default"><i class="fa fa-btn fa-calendar"></i>{{ $solicitud->created_at->addWeekdays(10)->format('d/m/Y') }}</span>
+                                    <br/><br/>
+                                    <span class="label label-primary">
+                                        <strong>Estado: </strong><i class="fa fa-btn fa-clock-o"></i>Revisando...
+                                    </span>
+                                @else
+                                    Suba los documentos digitales para que su solicitud sea enviada. <br/>
+                                    <span class="label label-warning">
+                                        <strong>Estado: </strong><i class="fa fa-btn fa-warning"></i>No enviado
+                                    </span>
+                                @endif
+
                             @else
-                                Suba los documentos digitales para que su solicitud sea enviada. <br/>
-                                <span class="label label-warning">
-                                    <strong>Estado: </strong><i class="fa fa-btn fa-warning"></i>No enviado
+
+                                Se asignó el siguiente código único a su solicitud:<br/>
+                                <span class="label label-success"><i class="fa fa-btn fa-key"></i>{{ $solicitud->etapa_inicio->codigo }}</span>
+                                <br/><br/>
+                                @if($solicitud->etapa_inicio->estado == 'adicional')
+                                <span class="label label-info">
+                                    <strong>Estado: </strong><i class="fa fa-btn fa-plus-square"></i>Solicitud de Información adicional
                                 </span>
+                                @elseif($solicitud->etapa_inicio->estado == 'admision')
+                                <span class="label label-success">
+                                    <strong>Estado: </strong><i class="fa fa-btn fa-check"></i>Admisión
+                                </span>
+                                @elseif($solicitud->etapa_inicio->estado == 'subsanacion')
+                                <span class="label label-warning">
+                                    <strong>Estado: </strong><i class="fa fa-btn fa-refresh"></i>Subsanación
+                                </span>
+                                @endif
+
                             @endif
                             </h2>
                         </div>

@@ -12,7 +12,9 @@ class Provincia extends Model
     protected $primaryKey = 'codigo';
     public $incrementing = false;
 
-    protected $fillable = ['codigo', 'nombre', 'departamento_codigo'];
+    protected $fillable = ['codigo', 'nombre', 'fecha_ley', 'departamento_codigo'];
+
+    protected $dates = ['fecha_ley'];
 
     // Relationships
     public function municipios(){

@@ -79,9 +79,9 @@
                     <li><a href="#">Etapa de Final</a></li>
                     <li><a href="#">Demarcación</a></li>
                     <li><a href="#">Ley</a></li>
-                    <li><a href="#">Geoserver</a></li>
-                    <li><a href="#">Geonetwork</a></li>
-                    <li><a href="#">Visualizador</a></li>
+                    <li><a href="http://200.87.131.174:8080/geonetwork" target="_blank">Geonetwork</a></li>
+                    <li><a href="http://200.87.131.174:8080/geoserver" target="_blank">Geoserver</a></li>
+                    <li><a href="http://200.87.131.174:8080/mapfishapp/?noheader=true" target="_blank">Visualizador</a></li>
                 </ul>
 
 

@@ -26,7 +26,7 @@ class SolicitudController extends Controller
      */
     public function index()
     {
-        $solicitudes = Solicitud::orderBy('created_at', 'des')->paginate(12);
+        $solicitudes = Solicitud::orderBy('created_at', 'DESC')->paginate(12);
         return view('solicitud.index')->with('solicitudes', $solicitudes);
     }
 
@@ -129,7 +129,8 @@ class SolicitudController extends Controller
         }
     }
 
-    public function uploadTecnico(Request $request, $id){
+    public function uploadTecnico(Request $request, $id)
+    {
         $this->validate($request, [
             'documentos_tecnicos' => 'required|mimes:zip,rar',
         ]);

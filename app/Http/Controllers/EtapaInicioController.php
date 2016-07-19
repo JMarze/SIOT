@@ -12,6 +12,11 @@ use App\Solicitud;
 use App\DocumentoDigital;
 use App\Codigo;
 use App\EtapaInicio;
+use App\Adicional;
+use App\Admision;
+use App\Subsanacion;
+
+use App\Http\Requests\EtapaInicioRequest;
 
 class EtapaInicioController extends Controller
 {
@@ -43,7 +48,7 @@ class EtapaInicioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EtapaInicioRequest $request)
     {
         $nuevoCodigo = Codigo::get()->first();
         if ($nuevoCodigo->año == Carbon::now()->year){
@@ -79,6 +84,41 @@ class EtapaInicioController extends Controller
         $etapaInicio->codigo = $codigo;
         $etapaInicio->solicitud_id = $request->solicitud;
         $etapaInicio->save();
+
+        switch ($request->estado){
+            case 'adicional':
+                $etapaInicio->fecha_estado = Carbon::now()->addWeekdays(10);
+                $etapaInicio->update();
+
+                $adicional = new Adicional();
+                $adicional->etapa_inicio_codigo = $codigo;
+                $adicional->save();
+                break;
+            case 'admision':
+                $etapaInicio->fecha_estado = Carbon::now()->addWeekdays(5);
+                $etapaInicio->update();
+
+                $admision = new Admision();
+                $admision->etapa_inicio_codigo = $codigo;
+                $admision->save();
+                $admision->nota = $request->nota;
+                $admision->update();
+                break;
+            case 'subsanacion':
+                $etapaInicio->fecha_estado = Carbon::now()->addWeekdays(30);
+                $etapaInicio->update();
+
+                $subsanacion = new Subsanacion();
+                $subsanacion->etapa_inicio_codigo = $codigo;
+                $subsanacion->save();
+                $subsanacion->nota = $request->nota;
+                $subsanacion->update();
+                break;
+            default:
+                $etapaInicio->fecha_estado = null;
+                $etapaInicio->update();
+                break;
+        }
 
         if ($request->documento_1 == 'cumple'){
             $etapaInicio->documentosDigitales()->attach(1, ['cumple' => 1]);
@@ -175,6 +215,8 @@ class EtapaInicioController extends Controller
         }else{
             $etapaInicio->documentosDigitales()->attach(12, ['cumple' => null]);
         }
+
+        return redirect()->route('solicitud.index');
     }
 
     /**

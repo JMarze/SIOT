@@ -39,6 +39,17 @@
 
                     {!! Form::open(array('id' => 'form-etapa_inicio', 'files' => 'true', 'class' => 'form-horizontal', 'method' => 'POST', 'route' => ['etapa_inicio.store', 'solicitud' => $solicitud->id])) !!}
 
+                    <div class="form-group{{ $errors->has('solicitud_id')?' has-error':'' }}">
+                        {!! Form::hidden('solicitud_id', $solicitud->id, $attributes = array('class' => 'form-control')) !!}
+                        <div class="col-md-6">
+                        @if($errors->has('solicitud_id'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('solicitud_id') }}</strong>
+                            </span>
+                        @endif
+                        </div>
+                    </div>
+
                     @foreach($documentosDigitales as $documento)
                     <div class="form-group">
                         {!! Form::label('documento_'.$documento->id, $documento->descripcion, array('class' => 'col-md-6 control-label')) !!}
@@ -50,27 +61,27 @@
 
                     <hr/>
 
-                    <div class="form-group{{ $errors->has('informe_tecnico')?' has-error':'' }}">
-                        {!! Form::label('informe_tecnico', 'Subir informe técnico', array('class' => 'col-md-4 control-label')) !!}
+                    <div class="form-group{{ $errors->has('informe_tecnico_legal')?' has-error':'' }}">
+                        {!! Form::label('informe_tecnico_legal', 'Subir informe técnico', array('class' => 'col-md-4 control-label')) !!}
                         <div class="col-md-6">
-                            {!! Form::file('informe_tecnico', $attributes = array('class' => 'form-control')) !!}
+                            {!! Form::file('informe_tecnico_legal', $attributes = array('class' => 'form-control')) !!}
 
-                            @if($errors->has('informe_tecnico'))
+                            @if($errors->has('informe_tecnico_legal'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('informe_tecnico') }}</strong>
+                                <strong>{{ $errors->first('informe_tecnico_legal') }}</strong>
                             </span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('informe_pronunciamiento')?' has-error':'' }}">
-                        {!! Form::label('informe_pronunciamiento', 'Subir informe pronunciamiento', array('class' => 'col-md-4 control-label')) !!}
+                    <div class="form-group{{ $errors->has('nota')?' has-error':'' }}">
+                        {!! Form::label('nota', 'Subir nota de admisión o subsanación', array('class' => 'col-md-4 control-label')) !!}
                         <div class="col-md-6">
-                            {!! Form::file('informe_pronunciamiento', $attributes = array('class' => 'form-control')) !!}
+                            {!! Form::file('nota', $attributes = array('class' => 'form-control')) !!}
 
-                            @if($errors->has('informe_pronunciamiento'))
+                            @if($errors->has('nota'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('informe_pronunciamiento') }}</strong>
+                                <strong>{{ $errors->first('nota') }}</strong>
                             </span>
                             @endif
                         </div>
@@ -79,24 +90,11 @@
                     <div class="form-group{{ $errors->has('estado')?' has-error':'' }}">
                         {!! Form::label('estado', 'Estado de la etapa', array('class' => 'col-md-4 control-label')) !!}
                         <div class="col-md-6">
-                            {!! Form::select('estado', ['adicional' => 'Requiere informacón adicional', 'admisión' => 'La solicitud fué admitida', 'subsanación' => 'Requiere subsanación en la información', 'pronunciamiento' => 'Esperando el prounicuamiento de colindantes', 'informe pronunciamiento' => 'Informe de pronunciamiento elaborado', 'coordinacion' => 'En coordinación', 'cierre' => 'Etapa de inicio finalizada', 'archivado' => 'Solicitud archivada'], null, $attributes = array('class' => 'form-control', 'placeholder' => 'Seleccione un estado')) !!}
+                            {!! Form::select('estado', ['adicional' => 'Solicitud de información adicional', 'admision' => 'Nota de admisión', 'subsanacion' => 'Nota de subsanación'], null, $attributes = array('class' => 'form-control', 'placeholder' => 'Seleccione un estado')) !!}
 
                             @if($errors->has('estado'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('estado') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="form-group{{ $errors->has('acta_cierre')?' has-error':'' }}">
-                        {!! Form::label('acta_cierre', 'Subir acta de cierre', array('class' => 'col-md-4 control-label')) !!}
-                        <div class="col-md-6">
-                            {!! Form::file('acta_cierre', $attributes = array('class' => 'form-control')) !!}
-
-                            @if($errors->has('acta_cierre'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('acta_cierre') }}</strong>
                             </span>
                             @endif
                         </div>
