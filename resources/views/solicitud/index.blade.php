@@ -39,6 +39,7 @@
 
                                     <button type="button" class="btn btn-sm btn-success" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud revisada" data-content="Su solicitud fué revisada satisfactoriamente el {{ $solicitud->etapa_inicio->created_at->format('d/m/Y') }}, ahora cuenta con un código único. Gracias." data-container="body">
                                         <i class="fa fa-check-square-o"></i>
+                                        <span class="sr-only">Solicitud revisada</span>
                                     </button>
 
                                 @else
@@ -46,10 +47,12 @@
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
                                     <button type="button" class="btn btn-sm btn-primary" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud enviada" data-content="Su solicitud fué enviada satisfactoriamente el {{ $solicitud->created_at->format('d/m/Y') }}, ahora debe esperar 10 días hábiles para la generación de su código. Gracias." data-container="body">
                                         <i class="fa fa-send"></i>
+                                        <span class="sr-only">Solicitud enviada</span>
                                     </button>
                                     @else
                                     <button type="button" class="btn btn-sm btn-warning" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud no enviada" data-content="Su solicitud aún no fué enviada, debe subir los archivos digitales comprimidos para que su solicitud sea enviada. Gracias." data-container="body">
                                         <i class="fa fa-warning"></i>
+                                        <span class="sr-only">Solicitud no enviada</span>
                                     </button>
                                     @endif
 
@@ -72,10 +75,12 @@
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
                                     <a href="{{ route('etapa_inicio.create', ['solicitud' => $solicitud->id]) }}" class="btn btn-sm btn-success" title="Revisar solicitud">
                                         <i class="fa fa-check"></i>
+                                        <span class="sr-only">Revisar solicitud</span>
                                     </a>
                                     @else
-                                    <a href="#" class="btn btn-sm btn-default" title="Eliminar solicitud">
+                                    <a href="#" class="btn btn-sm btn-default" title="Eliminar solicitud" data-toggle="modal" data-target="#destroy" data-id="{{ $solicitud->id }}">
                                         <i class="fa fa-trash"></i>
+                                        <span class="sr-only">Eliminar solicitud</span>
                                     </a>
                                     @endif
 
@@ -208,6 +213,7 @@
 
 @include('solicitud.partial.uploadsolicitante')
 @include('solicitud.partial.uploadtecnico')
+@include('solicitud.partial.destroy')
 
 @endsection
 
@@ -227,6 +233,31 @@ $(document).on('click', 'button[data-target="#upload_solicitante"]', function(e)
 $(document).on('click', 'button[data-target="#upload_tecnico"]', function(e){
     var idSolicitud = $(this).attr('data-id');
     $('#form-upload-tecnico').attr('data-id', idSolicitud);
+});
+
+// Llenar Form -> Eliminar
+$(document).on('click', 'a[data-target="#destroy"]', function(e){
+    var idSolicitud = $(this).attr('data-id');
+    var url = '/solicitud/' + idSolicitud + '/edit';
+    var data = 'solicitud=' + idSolicitud;
+    $.ajax({
+        url: url,
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        method: 'GET',
+        dataType: 'JSON',
+        data: data,
+        beforeSend: function(e){
+            $('#msg-destroy').css('display', 'block');
+            $('#form-destroy').css('display', 'none');
+        }
+    }).done(function (response){
+        $('#question-destroy').html("¿Está seguro de eliminar la solicitud de: <i>"+ response['solicitud']['nombre_solicitante'] +"</i>?");
+        $('#btn-eliminar').css('display', 'inline-block');
+
+        $('#msg-destroy').css('display', 'none');
+        $('#form-destroy').css('display', 'block');
+        $('#form-destroy').attr('data-id', idSolicitud);
+    });
 });
 
 // Reset Form

@@ -53,9 +53,9 @@ class SolicitudController extends Controller
         try{
             $solicitud->save();
             $solicitud->municipios()->attach($request->municipios);
-            flash()->success('Su solicitud fué enviada...');
+            flash()->success('Su solicitud fué registrada...');
         }catch(\Exception $ex){
-            flash()->error('Su solicitud no fué enviada. Ocurrió un problema en la transacción...' . $ex->getMessage());
+            flash()->error('Su solicitud no fué registrada. Ocurrió un problema en la transacción...' . $ex->getMessage());
         }finally{
             return redirect()->route('solicitud.index');
         }
@@ -78,9 +78,21 @@ class SolicitudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($id);
+                return response()->json([
+                    'solicitud' => $solicitud,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al buscar datos... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
+        }
     }
 
     /**
@@ -101,9 +113,31 @@ class SolicitudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($id);
+                $solicitud->delete();
+
+                if($solicitud->documentos_solicitante != null && \Storage::disk('local')->exists($solicitud->documentos_solicitante)){
+                    \Storage::disk('local')->delete($solicitud->documentos_solicitante);
+                }
+                if($solicitud->documentos_tecnicos != null && \Storage::disk('local')->exists($solicitud->documentos_tecnicos)){
+                    \Storage::disk('local')->delete($solicitud->documentos_tecnicos);
+                }
+
+                flash()->error('Se eliminó la solicitud de: '.$solicitud->nombre_solicitante);
+                return response()->json([
+                    'mensaje' => $solicitud->id,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al eliminar... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
+        }
     }
 
     public function uploadSolicitud(Request $request, $id)

@@ -27,7 +27,7 @@ class CreateSolicitudesTable extends Migration
             $table->string('municipio_codigo', 6)->index();
             $table->foreign('municipio_codigo')->references('codigo')->on('municipios');
             $table->integer('solicitud_id')->unsigned();
-            $table->foreign('solicitud_id')->references('id')->on('solicitudes');
+            $table->foreign('solicitud_id')->references('id')->on('solicitudes')->onDelete('cascade');
         });
     }
 
