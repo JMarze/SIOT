@@ -19,7 +19,7 @@ class CreateSolicitudesTable extends Migration
             $table->string('documentos_solicitante', 25)->nullable();
             $table->string('documentos_tecnicos', 25)->nullable();
 
-            $table->timestamp('created_at');
+            $table->timestamps();
             $table->softDeletes();
         });
 

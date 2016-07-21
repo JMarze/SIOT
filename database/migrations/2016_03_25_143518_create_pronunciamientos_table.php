@@ -22,7 +22,7 @@ class CreatePronunciamientosTable extends Migration
             $table->integer('colindante_id')->unsigned();
             $table->foreign('colindante_id')->references('id')->on('colindantes');
 
-            $table->timestamp('created_at');
+            $table->timestamps();
         });
     }
 

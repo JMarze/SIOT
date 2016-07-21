@@ -26,7 +26,7 @@ class SolicitudController extends Controller
      */
     public function index()
     {
-        $solicitudes = Solicitud::orderBy('created_at', 'DESC')->paginate(12);
+        $solicitudes = Solicitud::orderBy('updated_at', 'DESC')->paginate(12);
         return view('solicitud.index')->with('solicitudes', $solicitudes);
     }
 

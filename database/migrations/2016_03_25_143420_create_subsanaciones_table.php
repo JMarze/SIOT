@@ -17,7 +17,7 @@ class CreateSubsanacionesTable extends Migration
             $table->string('nota', 25);
             $table->string('documentos', 25)->nullable();
 
-            $table->timestamp('created_at');
+            $table->timestamps();
 
             $table->string('etapa_inicio_codigo', 40)->index();
             $table->foreign('etapa_inicio_codigo')->references('codigo')->on('etapa_inicio');

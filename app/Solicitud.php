@@ -12,9 +12,7 @@ class Solicitud extends Model
 
     protected $fillable = ['nombre_solicitante', 'tipo_limite', 'documentos_solicitante', 'documentos_tecnicos'];
 
-    protected $dates = ['created_at', 'deleted_at'];
-
-    public $timestamps = false;
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     // Relationships
     public function municipios(){

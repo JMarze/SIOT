@@ -8,11 +8,9 @@ class Admision extends Model
 {
     protected $table = "admisiones";
 
-    public $timestamps =false;
-
     protected $fillable = ['nota', 'etapa_inicio_codigo'];
 
-    protected $dates = ['created_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     // Mutators
     public function setNotaAttribute($file_informe){

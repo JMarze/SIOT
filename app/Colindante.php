@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Colindante extends Model
 {
     protected $table="colindantes";
+
     public $timestamps =false;
 
     protected $fillable=['etapa_inicio_codigo', 'municipio_codigo', 'nota'.'fecha_emision_nota'];

@@ -8,11 +8,9 @@ class Subsanacion extends Model
 {
     protected $table = "subsanaciones";
 
-    public $timestamps =false;
-
     protected $fillable = ['nota', 'documentos', 'etapa_inicio_codigo'];
 
-    protected $dates = ['created_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     // Mutators
     public function setNotaAttribute($file_informe){

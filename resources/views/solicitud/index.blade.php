@@ -37,7 +37,7 @@
                                 <div class="col-md-2">
                                 @if($solicitud->etapa_inicio != null)
 
-                                    <button type="button" class="btn btn-sm btn-success" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud revisada" data-content="Su solicitud fué revisada satisfactoriamente el {{ $solicitud->etapa_inicio->created_at->format('d/m/Y') }}, ahora cuenta con un código único. Gracias." data-container="body">
+                                    <button type="button" class="btn btn-sm btn-success" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud revisada" data-content="Su solicitud fué revisada satisfactoriamente el {{ $solicitud->etapa_inicio->updated_at->format('d/m/Y') }}, ahora cuenta con un código único. Gracias." data-container="body">
                                         <i class="fa fa-check-square-o"></i>
                                         <span class="sr-only">Solicitud revisada</span>
                                     </button>
@@ -45,7 +45,7 @@
                                 @else
 
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
-                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud enviada" data-content="Su solicitud fué enviada satisfactoriamente el {{ $solicitud->created_at->format('d/m/Y') }}, ahora debe esperar 10 días hábiles para la generación de su código. Gracias." data-container="body">
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="popover" data-placement="top" data-trigger="focus" title="Solicitud enviada" data-content="Su solicitud fué enviada satisfactoriamente el {{ $solicitud->updated_at->format('d/m/Y') }}, ahora debe esperar 10 días hábiles para la generación de su código. Gracias." data-container="body">
                                         <i class="fa fa-send"></i>
                                         <span class="sr-only">Solicitud enviada</span>
                                     </button>
@@ -155,7 +155,7 @@
                                     <span class="label label-default"><i class="fa fa-btn fa-clock-o"></i>10 días hábiles para su revisión.</span>
                                     <br/><br/>
                                     La fecha límite para este proceso es:<br/>
-                                    <span class="label label-default"><i class="fa fa-btn fa-calendar"></i>{{ $solicitud->created_at->addWeekdays(10)->format('d/m/Y') }}</span>
+                                    <span class="label label-default"><i class="fa fa-btn fa-calendar"></i>{{ $solicitud->updated_at->addWeekdays(10)->format('d/m/Y') }}</span>
                                     <br/><br/>
                                     <span class="label label-primary">
                                         <strong>Estado: </strong><i class="fa fa-btn fa-clock-o"></i>Revisando...
