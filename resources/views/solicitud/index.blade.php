@@ -72,7 +72,7 @@
                                 <div class="col-md-2">
                                 @if($solicitud->etapa_inicio == null)
 
-                                    @if(!Auth::guest() && Auth::user()->role == 'admin')
+                                    @if(!Auth::guest() && (Auth::user()->role == 'admin' || Auth::user()->role == 'user'))
 
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
                                     <a href="{{ route('etapa_inicio.create', ['solicitud' => $solicitud->id]) }}" class="btn btn-sm btn-success" title="Revisar solicitud">
@@ -105,7 +105,7 @@
                                 @if($solicitud->etapa_inicio == null)
 
                                     @if($solicitud->documentos_solicitante == null || $solicitud->documentos_solicitante == '')
-                                        @if(!Auth::guest() && Auth::user()->role == 'admin')
+                                        @if(!Auth::guest() && (Auth::user()->role == 'admin' || Auth::user()->role == 'user'))
                                         <div class="btn-group" role="group" aria-label="Center Align">
                                             <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
                                                 <i class="fa fa-btn fa-upload"></i>Subir .Zip
@@ -133,7 +133,7 @@
                                 @if($solicitud->etapa_inicio == null)
 
                                     @if($solicitud->documentos_tecnicos == null || $solicitud->documentos_tecnicos == '')
-                                        @if(!Auth::guest() && Auth::user()->role == 'admin')
+                                        @if(!Auth::guest() && (Auth::user()->role == 'admin' || Auth::user()->role == 'user'))
                                         <div class="btn-group" role="group" aria-label="Center Align">
                                             <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
                                                 <i class="fa fa-btn fa-upload"></i>Subir .Zip
