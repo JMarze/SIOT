@@ -17,6 +17,8 @@ use App\Municipio;
 class SolicitudController extends Controller
 {
     public function __construct(){
+        $this->middleware('role.user', ['only' => ['create', 'store', 'edit', 'destroy', 'uploadSolicitud', 'uploadTecnico']]);
+
         Carbon::setLocale('es');
     }
     /**

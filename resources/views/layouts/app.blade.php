@@ -90,7 +90,6 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                     <li><a href="{{ url('/login') }}">Iniciar Sesión</a></li>
-                    <li><a href="{{ url('/register') }}">Regístrese</a></li>
                     @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -98,6 +97,9 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
+                            @if(Auth::user()->role == 'admin')
+                            <li><a href="{{ url('/register') }}">Regístrar</a></li>
+                            @endif
                             <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Cerrar Sesión</a></li>
                         </ul>
                     </li>

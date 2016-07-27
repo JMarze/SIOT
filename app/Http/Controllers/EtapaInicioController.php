@@ -20,6 +20,9 @@ use App\Http\Requests\EtapaInicioRequest;
 
 class EtapaInicioController extends Controller
 {
+    public function __construct(){
+        $this->middleware('role.admin', ['only' => ['create', 'store', 'descargarSolicitante', 'descargarTecnico']]);
+    }
     /**
      * Display a listing of the resource.
      *

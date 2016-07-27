@@ -72,6 +72,8 @@
                                 <div class="col-md-2">
                                 @if($solicitud->etapa_inicio == null)
 
+                                    @if(!Auth::guest() && Auth::user()->role == 'admin')
+
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
                                     <a href="{{ route('etapa_inicio.create', ['solicitud' => $solicitud->id]) }}" class="btn btn-sm btn-success" title="Revisar solicitud">
                                         <i class="fa fa-check"></i>
@@ -82,6 +84,8 @@
                                         <i class="fa fa-trash"></i>
                                         <span class="sr-only">Eliminar solicitud</span>
                                     </a>
+                                    @endif
+
                                     @endif
 
                                 @endif
@@ -101,11 +105,15 @@
                                 @if($solicitud->etapa_inicio == null)
 
                                     @if($solicitud->documentos_solicitante == null || $solicitud->documentos_solicitante == '')
-                                    <div class="btn-group" role="group" aria-label="Center Align">
-                                        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
-                                            <i class="fa fa-btn fa-upload"></i>Subir .Zip
-                                        </button>
-                                    </div>
+                                        @if(!Auth::guest() && Auth::user()->role == 'admin')
+                                        <div class="btn-group" role="group" aria-label="Center Align">
+                                            <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_solicitante" data-id="{{ $solicitud->id }}">
+                                                <i class="fa fa-btn fa-upload"></i>Subir .Zip
+                                            </button>
+                                        </div>
+                                        @else
+                                        <h5><span class="label label-warning">Sin archivo</span></h5>
+                                        @endif
                                     @else
                                     <h5><span class="label label-default">{{ $solicitud->documentos_solicitante }}</span></h5>
                                     @endif
@@ -125,11 +133,15 @@
                                 @if($solicitud->etapa_inicio == null)
 
                                     @if($solicitud->documentos_tecnicos == null || $solicitud->documentos_tecnicos == '')
-                                    <div class="btn-group" role="group" aria-label="Center Align">
-                                        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
-                                            <i class="fa fa-btn fa-upload"></i>Subir .Zip
-                                        </button>
-                                    </div>
+                                        @if(!Auth::guest() && Auth::user()->role == 'admin')
+                                        <div class="btn-group" role="group" aria-label="Center Align">
+                                            <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#upload_tecnico" data-id="{{ $solicitud->id }}">
+                                                <i class="fa fa-btn fa-upload"></i>Subir .Zip
+                                            </button>
+                                        </div>
+                                        @else
+                                        <h5><span class="label label-warning">Sin archivo</span></h5>
+                                        @endif
                                     @else
                                     <h5><span class="label label-default">{{ $solicitud->documentos_tecnicos }}</span></h5>
                                     @endif
