@@ -75,10 +75,14 @@
                                     @if(!Auth::guest() && (Auth::user()->role == 'admin' || Auth::user()->role == 'user'))
 
                                     @if(($solicitud->documentos_solicitante != null && $solicitud->documentos_solicitante != '') && ($solicitud->documentos_tecnicos != null || $solicitud->documentos_tecnicos != ''))
+
+                                    @if(!Auth::guest() && Auth::user()->role == 'admin')
                                     <a href="{{ route('etapa_inicio.create', ['solicitud' => $solicitud->id]) }}" class="btn btn-sm btn-success" title="Revisar solicitud">
                                         <i class="fa fa-check"></i>
                                         <span class="sr-only">Revisar solicitud</span>
                                     </a>
+                                    @endif
+
                                     @else
                                     <a href="#" class="btn btn-sm btn-default" title="Eliminar solicitud" data-toggle="modal" data-target="#destroy" data-id="{{ $solicitud->id }}">
                                         <i class="fa fa-trash"></i>
