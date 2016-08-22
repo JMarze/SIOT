@@ -38,9 +38,20 @@ Route::group(['middleware' => 'web'], function () {
     // Solicitud
     Route::resource('solicitud', 'SolicitudController');
 
+    // Llenar Solicitud
+    Route::get('solicitud/{solicitud}/solicitar', 'SolicitudController@llenarSolicitud')->name('solicitud.solicitar');
+
+    // Revisar Solicitud
+    Route::get('solicitud/{solicitud}/revisar', 'SolicitudController@revisarSolicitud')->name('solicitud.revisar');
+
+    // Download Documento Digital
+    Route::get('solicitud/{solicitud}/descargar/{documentoDigital}', 'SolicitudController@descargarDocumento')->name('solicitud.descargar');
+
     // Upload Solicitud
-    Route::put('solicitud/solicitante/{solicitud}', 'SolicitudController@uploadSolicitud')->name('solicitud.upload.solicitante');
-    Route::put('solicitud/tecnico/{solicitud}', 'SolicitudController@uploadTecnico')->name('solicitud.upload.tecnico');
+    Route::put('solicitud/{solicitud}/solicitar/{documentoDigital}', 'SolicitudController@subirSolicitud')->name('solicitud.subir_solicitud');
+
+    // Revisión Solicitud
+    Route::post('solicitud/{solicitud}/revision', 'SolicitudController@revisionSolicitud')->name('solicitud.revision');
 
     // Etapa Inicio
     Route::resource('etapa_inicio', 'EtapaInicioController');

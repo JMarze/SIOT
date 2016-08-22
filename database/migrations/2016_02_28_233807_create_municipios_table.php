@@ -18,6 +18,7 @@ class CreateMunicipiosTable extends Migration
             $table->string('capital', 50);
             $table->string('ley', 10);
             $table->date('fecha_ley')->nullable();
+            $table->boolean('proceso_2150')->default(false);
 
             $table->string('provincia_codigo', 4)->index();
             $table->foreign('provincia_codigo')->references('codigo')->on('provincias');

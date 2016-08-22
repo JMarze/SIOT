@@ -13,6 +13,7 @@ use App\Http\Requests\SolicitudRequest;
 
 use App\Solicitud;
 use App\Municipio;
+use App\DocumentoDigital;
 
 class SolicitudController extends Controller
 {
@@ -51,13 +52,19 @@ class SolicitudController extends Controller
      */
     public function store(SolicitudRequest $request)
     {
-        $solicitud = new Solicitud($request->all());
         try{
+            $solicitud = new Solicitud($request->all());
+            $solicitud->user_id = $request->user()->id;
+            $solicitud->estado = 'solicitud';
             $solicitud->save();
             $solicitud->municipios()->attach($request->municipios);
-            flash()->success('Su solicitud fué registrada...');
+
+            $documentosDigitales = DocumentoDigital::orderBy('id', 'ASC')->lists('id')->toArray();
+            $solicitud->documentosSolicitud()->sync($documentosDigitales);
+
+            flash()->success('Solicitud de Autoridad: '.$solicitud->nombre_solicitante.' fué registrada...');
         }catch(\Exception $ex){
-            flash()->error('Su solicitud no fué registrada. Ocurrió un problema en la transacción...' . $ex->getMessage());
+            flash()->error('La solicitud no fué registrada. Ocurrió un problema en la transacción...' . $ex->getMessage());
         }finally{
             return redirect()->route('solicitud.index');
         }
@@ -71,18 +78,7 @@ class SolicitudController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, $id)
-    {
-        if ($request->ajax()){
+        /*if ($request->ajax()){
             try{
                 $solicitud = Solicitud::find($id);
                 return response()->json([
@@ -94,7 +90,30 @@ class SolicitudController extends Controller
                     'mensaje' => $ex->getMessage(),
                 ]);
             }
+        }*/
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        /*$solicitud = Solicitud::find($id);
+        $documentosDigitales = collect();
+        foreach(DocumentoDigital::get() as $documentoDigital){
+            $id = $documentoDigital->id;
+            $descripcion = $documentoDigital->descripcion;
+            $descripcion = str_replace('[texto]', ($solicitud->tipo_limite == 'M')?$documentoDigital->texto_intra:$documentoDigital->texto_inter, $descripcion);
+            $articulo = ($solicitud->tipo_limite == 'M')?$documentoDigital->articulo_intra:$documentoDigital->articulo_inter;
+
+            $documentosDigitales->push(['id' => $id, 'descripcion' => $descripcion, 'articulo' => $articulo]);
         }
+        $documentosDigitales->sortBy('articulo');
+        $documentosDigitales->toJson();
+        return view('solicitud.edit')->with('solicitud', $solicitud)->with('documentosDigitales', $documentosDigitales);*/
     }
 
     /**
@@ -106,7 +125,17 @@ class SolicitudController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $solicitud = Solicitud::find($id);
+            $solicitud->fill($request->all());
+            $solicitud->user_id = $request->user()->id;
+            $solicitud->update();
+            flash()->success('Solicitud de Autoridad: '.$solicitud->nombre_solicitante.' pasó al estado: '.$solicitud->estado.'...');
+        }catch(\Exception $ex){
+            flash()->error('La solicitud no fué enviada. Ocurrió un problema en la transacción...' . $ex->getMessage());
+        }finally{
+            return redirect()->route('solicitud.index');
+        }
     }
 
     /**
@@ -120,14 +149,10 @@ class SolicitudController extends Controller
         if ($request->ajax()){
             try{
                 $solicitud = Solicitud::find($id);
+                $solicitud->documentosSolicitud()->detach();
+                $solicitud->documentosAdicional()->detach();
+                $solicitud->documentosSubsanacion()->detach();
                 $solicitud->delete();
-
-                if($solicitud->documentos_solicitante != null && \Storage::disk('local')->exists($solicitud->documentos_solicitante)){
-                    \Storage::disk('local')->delete($solicitud->documentos_solicitante);
-                }
-                if($solicitud->documentos_tecnicos != null && \Storage::disk('local')->exists($solicitud->documentos_tecnicos)){
-                    \Storage::disk('local')->delete($solicitud->documentos_tecnicos);
-                }
 
                 flash()->error('Se eliminó la solicitud de: '.$solicitud->nombre_solicitante);
                 return response()->json([
@@ -142,19 +167,32 @@ class SolicitudController extends Controller
         }
     }
 
-    public function uploadSolicitud(Request $request, $id)
+    public function llenarSolicitud(Request $request, $solicitudId){
+        $solicitud = Solicitud::find($solicitudId);
+        $documentosFaltantes = $solicitud->documentosSolicitud()->whereNull('documento_digital_solicitud.archivo')->count();
+        return view('solicitud.solicitar')->with('solicitud', $solicitud)->with('documentosFaltantes', $documentosFaltantes);
+    }
+
+    public function subirSolicitud(Request $request, $solicitudId, $documentoDigital)
     {
         $this->validate($request, [
-            'documentos_solicitante' => 'required|mimes:zip,rar',
+            'archivo' => 'required|mimes:zip',
+            'fojas_de' => 'required|numeric|min:1',
+            'fojas_a' => 'required|numeric|min:1',
         ]);
         if ($request->ajax()){
             try{
-                $solicitud = Solicitud::find($id);
-                $solicitud->documentos_solicitante = $request->documentos_solicitante;
+                $solicitud = Solicitud::find($solicitudId);
+
+                $nombreArchivo = $solicitud->id . "-" . $documentoDigital . "-" . Carbon::now()->year . Carbon::now()->month . Carbon::now()->day . "-" . Carbon::now()->hour . Carbon::now()->minute . Carbon::now()->second . "." . $request->archivo->getClientOriginalExtension();
+
+                \Storage::disk('local')->put('Solicitud-'.$solicitud->id.'/'.$nombreArchivo, \File::get($request->archivo));
+
+                $solicitud->documentosSolicitud()->updateExistingPivot($documentoDigital, ['fojas_de' => $request['fojas_de'], 'fojas_a' => $request['fojas_a'], 'archivo' => $nombreArchivo, 'fecha' => Carbon::now()]);
                 $solicitud->update();
                 flash()->success('El archivo se subió exitosamente...');
                 return response()->json([
-                    'mensaje' => $solicitud->id,
+                    'mensaje' => $nombreArchivo,
                 ]);
             }catch(\Exception $ex){
                 flash()->error('Se presentó un problema al subir el archivo... Intenta más tarde');
@@ -165,26 +203,41 @@ class SolicitudController extends Controller
         }
     }
 
-    public function uploadTecnico(Request $request, $id)
-    {
-        $this->validate($request, [
-            'documentos_tecnicos' => 'required|mimes:zip,rar',
-        ]);
-        if ($request->ajax()){
-            try{
-                $solicitud = Solicitud::find($id);
-                $solicitud->documentos_tecnicos = $request->documentos_tecnicos;
-                $solicitud->update();
-                flash()->success('El archivo se subió exitosamente...');
-                return response()->json([
-                    'mensaje' => $solicitud->id,
-                ]);
-            }catch(\Exception $ex){
-                flash()->error('Se presentó un problema al subir el archivo... Intenta más tarde');
-                return response()->json([
-                    'mensaje' => $ex->getMessage(),
-                ]);
+    public function descargarDocumento(Request $request, $solicitudId, $documentoDigital){
+        $solicitud = Solicitud::find($solicitudId);
+        $documento = \Storage::disk('local')->get('Solicitud-'.$solicitud->id.'/'.$documentoDigital);
+        return response($documento, 200)->header('Content-Type', 'application/zip');
+    }
+
+    public function revisarSolicitud(Request $request, $solicitudId){
+        $solicitud = Solicitud::find($solicitudId);
+        $revisionesFaltantes = $solicitud->documentosSolicitud()->where('documento_digital_solicitud.estado', '=', 'revision')->count();
+        return view('solicitud.revisar')->with('solicitud', $solicitud)->with('revisionesFaltantes', $revisionesFaltantes);
+    }
+
+    public function revisionSolicitud(Request $request, $solicitudId){
+        $solicitud = Solicitud::find($solicitudId);
+        for($i=0; $i<count($request->documento); $i++){
+            if($request->cumple[$i] != ''){
+                $solicitud->documentosSolicitud()->updateExistingPivot($request->documento[$i], ['cumple' => $request->cumple[$i], 'estado' => $request->estado[$i], 'observaciones' => ($request->observacion[$i] != '')?$request->observacion[$i]:null]);
+                switch($request->estado[$i]){
+                    case 'adicional':
+                        $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
+                        $solicitud->documentosAdicional()->detach($request->documento[$i]);
+                        $solicitud->documentosAdicional()->attach($request->documento[$i]);
+                        break;
+                    case 'subsanacion':
+                        $solicitud->documentosAdicional()->detach($request->documento[$i]);
+                        $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
+                        $solicitud->documentosSubsanacion()->attach($request->documento[$i]);
+                        break;
+                    case 'admision':
+                        $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
+                        $solicitud->documentosAdicional()->detach($request->documento[$i]);
+                        break;
+                }
             }
         }
+        return redirect()->route('solicitud.revisar', $solicitud->id);
     }
 }

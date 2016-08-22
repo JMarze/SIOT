@@ -16,8 +16,13 @@ class CreateSolicitudesTable extends Migration
             $table->increments('id');
             $table->string('nombre_solicitante', 100);
             $table->enum('tipo_limite', ['D', 'M']);
-            $table->string('documentos_solicitante', 25)->nullable();
-            $table->string('documentos_tecnicos', 25)->nullable();
+            $table->enum('estado', ['solicitud', 'revision', 'adicional', 'subsanación', 'admisión']);
+            $table->string('informe_tecnico_legal', 25)->nullable();
+            $table->string('nota_admision', 25)->nullable();
+            $table->string('nota_subsanacion', 25)->nullable();
+
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
             $table->softDeletes();

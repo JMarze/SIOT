@@ -72,7 +72,9 @@
                             Etapa de Inicio <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ route('solicitud.index') }}">Solicitudes</a></li>
+                            <li>
+                                <a href="{{ route('solicitud.index') }}"><i class="fa fa-btn fa-map-marker"></i>Solicitudes</a>
+                            </li>
                         </ul>
                     </li>
                     <li><a href="#">Etapa de Campo</a></li>

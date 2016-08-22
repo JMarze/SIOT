@@ -26,25 +26,7 @@ class EtapaInicio extends Model
     }
 
     // Relationships
-    public function colindantes(){
-        return $this->hasMany('App\Colindante');
-    }
     public function solicitud(){
         return $this->hasOne('App\Solicitud');
-    }
-    public function adicional(){
-        return $this->hasOne('App\Adicional');
-    }
-    public function admision(){
-        return $this->hasOne('App\Admision');
-    }
-    public function subsanacion(){
-        return $this->hasOne('App\Subsanacion');
-    }
-    public function limite_tramo(){
-        return $this->hasMany('App\LimiteTramo');
-    }
-    public function documentosDigitales(){
-        return $this->belongsToMany('App\DocumentoDigital', 'etapa_inicio_documento_digital', 'etapa_inicio_codigo', 'documento_digital_id')->withPivot('cumple');
     }
 }

@@ -12,7 +12,7 @@ class Municipio extends Model
     protected $primaryKey = 'codigo';
     public $incrementing = false;
 
-    protected $fillable = ['codigo', 'nombre', 'capital', 'ley', 'fecha_ley', 'provincia_codigo'];
+    protected $fillable = ['codigo', 'nombre', 'capital', 'ley', 'fecha_ley', 'proceso_2150', 'provincia_codigo'];
 
     protected $dates = ['fecha_ley'];
 

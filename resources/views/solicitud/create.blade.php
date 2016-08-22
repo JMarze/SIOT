@@ -11,7 +11,7 @@
                 <div class="panel-body">
                 {!! Form::open(array('id' => 'form-solicitud', 'files' => true, 'class' => 'form-horizontal', 'method' => 'POST', 'route' => 'solicitud.store')) !!}
                 <div class="form-group{{ $errors->has('nombre_solicitante')?' has-error':'' }}">
-                    {!! Form::label('nombre_solicitante', 'Nombre del Solicitante', array('class' => 'col-md-4 control-label')) !!}
+                    {!! Form::label('nombre_solicitante', 'Nombre de Autoridad Solicitante', array('class' => 'col-md-4 control-label')) !!}
                     <div class="col-md-6">
                         {!! Form::text('nombre_solicitante', null, $attributes = array('class' => 'form-control')) !!}
 
@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button id="enviar" type="submit" class="btn btn-primary">
-                               <i class="fa fa-btn fa-send-o"></i>Enviar Solicitud
+                               <i class="fa fa-btn fa-save"></i>Crear Solicitud
                         </button>
                     </div>
                 </div>
