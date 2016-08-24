@@ -14,6 +14,8 @@ use App\Http\Requests\SolicitudRequest;
 use App\Solicitud;
 use App\Municipio;
 use App\DocumentoDigital;
+use App\Codigo;
+use App\EtapaInicio;
 
 class SolicitudController extends Controller
 {
@@ -131,6 +133,44 @@ class SolicitudController extends Controller
             $solicitud->user_id = $request->user()->id;
             $solicitud->update();
             flash()->success('Solicitud de Autoridad: '.$solicitud->nombre_solicitante.' pasó al estado: '.$solicitud->estado.'...');
+
+            if($solicitud->estado == 'admision'){
+                // Generación de código
+                $nuevoCodigo = Codigo::get()->first();
+                if ($nuevoCodigo->año == Carbon::now()->year){
+                    $nuevoCodigo->numero += 1;
+                }else{
+                    $nuevoCodigo->numero = 1;
+                }
+                $nuevoCodigo->año = Carbon::now()->year;
+                $nuevoCodigo->update();
+
+                $dia = (Carbon::now()->day <= 9)?"0".Carbon::now()->day:Carbon::now()->day;
+                $mes = (Carbon::now()->month <= 9)?"0".Carbon::now()->month:Carbon::now()->month;
+                $anio = substr(Carbon::now()->year, -2);
+                $numeral = Codigo::get()->first();
+                switch (strlen($numeral->numero)){
+                    case 1:
+                        $correlativo = "000" . $numeral->numero;
+                        break;
+                    case 2:
+                        $correlativo = "00" . $numeral->numero;
+                        break;
+                    case 3:
+                        $correlativo = "0" . $numeral->numero;
+                        break;
+                    default:
+                        $correlativo = $numeral->numero;
+                        break;
+                }
+                $codigo = $dia . $mes . $anio . "-MA.VAICOT.DGLOTAR-" . $solicitud->tipo_limite . "-" . $correlativo . "/" . $numeral->año;
+
+                $etapaInicio = new EtapaInicio();
+                $etapaInicio->codigo = $codigo;
+                $etapaInicio->solicitud_id = $solicitud->id;
+                $etapaInicio->save();
+            }
+
         }catch(\Exception $ex){
             flash()->error('La solicitud no fué enviada. Ocurrió un problema en la transacción...' . $ex->getMessage());
         }finally{
