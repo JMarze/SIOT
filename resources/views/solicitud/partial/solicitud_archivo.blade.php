@@ -48,7 +48,7 @@
 
                 <div class="alert alert-warning" role="alert">
                     <i class="fa fa-btn fa-warning"></i>
-                    <strong>Mensaje:</strong> ¿Está seguro de enviar la información que acaba de detallar?
+                    <strong>Mensaje:</strong> Declaro la veracidad de los datos registrados y el correcto cargado de información
                 </div>
 
                 {!! Form::close() !!}

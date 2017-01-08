@@ -123,11 +123,13 @@
                             <hr/>
                             <div class="row">
                                 @if($solicitud->estado == 'solicitud')
-                                <div class="col-md-10 col-md-offset-1">
-                                    <a href="{{ route('solicitud.solicitar', $solicitud->id) }}" type="button" class="btn btn-default btn-block">
-                                        <i class="fa fa-btn fa-eye"></i>Ver y/o editar archivos digitales
-                                    </a>
-                                </div>
+                                    @if(!Auth::guest() && (Auth::user()->role == 'admin' || Auth::user()->role == 'user'))
+                                        <div class="col-md-10 col-md-offset-1">
+                                            <a href="{{ route('solicitud.solicitar', $solicitud->id) }}" type="button" class="btn btn-default btn-block">
+                                                <i class="fa fa-btn fa-eye"></i>Ver y/o editar archivos digitales
+                                            </a>
+                                        </div>
+                                    @endif
                                 @elseif($solicitud->estado == 'revision')
                                 <div class="col-md-12 text-center">
                                     Solicitud enviada el {{ $solicitud->updated_at->format('d/m/Y') }}, se necesitan: <br/>

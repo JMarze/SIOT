@@ -42,6 +42,7 @@
                             <th rowspan="2" style="vertical-align:middle;">Artículo</th>
                             <th colspan="2" style="text-align:center;">Fojas</th>
                             <th rowspan="2" style="text-align:center;vertical-align:middle;">Archivos (.zip)</th>
+                            <th></th>
                         </tr>
                         <tr>
                             <th style="text-align:center;">De</th>
@@ -77,6 +78,15 @@
                                 </button>
                                 @endif
                             </td>
+                            @if($documento->pivot->archivo != null)
+                            <td style="vertical-align:middle;color:green;">
+                                <i class="fa fa-flag"></i>
+                            </td>
+                            @else
+                            <td style="vertical-align:middle;">
+                                <i class="fa fa-flag-o"></i>
+                            </td>
+                            @endif
                         </tr>
                         @endforeach
 
@@ -101,13 +111,7 @@
                                 <p><i class="fa fa-btn fa-send-o"></i>
                                 <strong>Mensaje:</strong> Ha subido todos los archivos necesarios, ahora puede proceder a enviar su Solicitud de Delimitación Territorial haciendo clic en el botón de Enviar Solicitud.</p>
 
-                                <p>Por disposición del Artículo 232 del Texto Constitucional, hacemos saber que en caso de que surjan observaciones al tratamiento del proceso de referencia, la única entidad responsable es el
-                                @if($solicitud->tipo_limite == 'M')
-                                Gobierno Autónomo Departamental de {{ $solicitud->municipios->first()->provincia->departamento->nombre }}
-                                @else
-                                Ministerio de Autonomías
-                                @endif
-                                , en su calidad de autoridad de única instancia para la atención de estos procesos.</p>
+                                <p>Yo, {{ Auth::user()->name }}<br/>Como usuario habilitado para el llenado de datos en el nodo SIOT, juro que la información contenida en el presente registro fue cargada en el marco de la legalidad y veracidad. De comprobarse el llenado incorrecto o la falsedad de alguno de ellos, seré sujeto a las sanciones que establece la ley. Me comprometo, en caso de que la autoridad competente lo requiera, a presentar la documentación que sustente la información generada, a efectos de su veracidad. El correcto cargado de información es de exclusiva responsabilidad del usuario habilitado. Ello en el marco de lo establecido en la Ley Nro. 1178, Ley Nro. 339 y sus normas reglamentarias, Ley Nro. 2027, de 27 de octubre de 1999, Ley Nro. 004, de 31 de marzo de 2010, Reglamento de la Responsabilidad por la Función Pública.</p>
 
                                 {!! Form::open(['route' => ['solicitud.update', $solicitud->id], 'method' => 'PUT']) !!}
                                 {!! Form::hidden('estado', 'revision') !!}
