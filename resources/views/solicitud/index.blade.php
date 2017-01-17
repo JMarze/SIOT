@@ -28,8 +28,9 @@
 
         <div class="panel-body">
             @if($solicitudes->total() > 0)
+            @foreach($solicitudes->chunk(3) as $chunk)
             <div class="row">
-                @foreach($solicitudes as $solicitud)
+                @foreach($chunk as $solicitud)
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -212,6 +213,7 @@
                 </div>
                 @endforeach
             </div>
+            @endforeach
         </div>
 
         <div class="panel-footer">
