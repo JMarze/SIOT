@@ -3,11 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Carbon\Carbon;
 
 class Solicitud extends Model
 {
+    use SoftDeletes;
+
     protected $table = "solicitudes";
 
     protected $fillable = ['nombre_solicitante', 'tipo_limite', 'estado', 'informe_tecnico_legal', 'nota_admision', 'nota_subsanacion', 'user_id'];

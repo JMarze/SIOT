@@ -13,6 +13,7 @@ class DocumentoDigitalTableSeeder extends Seeder
     {
         DB::table('documentos_digitales')->insert([
             'descripcion' => 'Adecuación del Proceso 2150 a la Ley Nº 339',
+            'opcional' => true,
         ]);
         DB::table('documentos_digitales')->insert([
             'descripcion' => 'Solicitud de delimitación por límite y/o tramo [texto]',
@@ -44,6 +45,7 @@ class DocumentoDigitalTableSeeder extends Seeder
             'descripcion' => 'Convenios, actas de conciliación u otros documentos de respaldo que sirva para la delimitación de la unidad territorial',
             'articulo_inter' => 'Art. 32 III. b.',
             'articulo_intra' => 'Art. 66 III. a.',
+            'opcional' => true,
         ]);
         DB::table('documentos_digitales')->insert([
             'descripcion' => 'Mapa referencial de ubicación de la unidad territorial según la ex división político administrativa de Bolivia sobre mapas topográficos oficiales editados por el Instituto Geográfico Militar a escala 1:50.000, en caso de no existir ésta, a escala 1:100.000',

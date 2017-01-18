@@ -59,12 +59,16 @@
                         ?>
 
                         @foreach($solicitud->documentosSolicitud->sortBy($orden) as $documento)
-                        <tr>
+                        <tr class="{{ ($documento->opcional)?'success': '' }}">
                             <td>
                                 @if($solicitud->tipo_limite == 'M')
                                 <strong>{{ $documento->articulo_intra }}</strong> {{ str_replace("[texto]", $documento->texto_intra, $documento->descripcion) }}
                                 @else
                                 <strong>{{ $documento->articulo_inter }}</strong> {{ str_replace("[texto]", $documento->texto_inter, $documento->descripcion) }}
+                                @endif
+
+                                @if($documento->opcional)
+                                <i>&nbsp;(Opcional)</i>
                                 @endif
                             </td>
                             <td>{{ $documento->pivot->fojas_de }}</td>
@@ -99,9 +103,9 @@
                             @if($documentosFaltantes != 0)
                             <div class="alert alert-info" role="alert">
                                 <i class="fa fa-btn fa-upload"></i>
-                                <strong>Mensaje:</strong> Su solicitud aún no fué enviada para su revisión, debe subir
+                                <strong>Mensaje:</strong> Su solicitud aún no fué enviada para su revisión, debe subir al menos
                                 @if($documentosFaltantes > 1)
-                                los {{ $documentosFaltantes }} archivos faltantes.
+                                {{ $documentosFaltantes }} archivos faltantes.
                                 @else
                                 el archivo faltante.
                                 @endif
@@ -110,14 +114,15 @@
                             <div class="alert alert-success" role="alert">
                                 <p><i class="fa fa-btn fa-send-o"></i>
                                 <strong>Mensaje:</strong> Ha subido todos los archivos necesarios, ahora puede proceder a enviar su Solicitud de Delimitación Territorial haciendo clic en el botón de Enviar Solicitud.</p>
-
-                                <p>Yo, {{ Auth::user()->name }}<br/>Como usuario habilitado para el llenado de datos en el nodo SIOT, juro que la información contenida en el presente registro fue cargada en el marco de la legalidad y veracidad. De comprobarse el llenado incorrecto o la falsedad de alguno de ellos, seré sujeto a las sanciones que establece la ley. Me comprometo, en caso de que la autoridad competente lo requiera, a presentar la documentación que sustente la información generada, a efectos de su veracidad. El correcto cargado de información es de exclusiva responsabilidad del usuario habilitado. Ello en el marco de lo establecido en la Ley Nro. 1178, Ley Nro. 339 y sus normas reglamentarias, Ley Nro. 2027, de 27 de octubre de 1999, Ley Nro. 004, de 31 de marzo de 2010, Reglamento de la Responsabilidad por la Función Pública.</p>
-
+                                <hr/>
+                                <p>Yo, <strong>{{ Auth::user()->name }}</strong><br/>Como usuario habilitado para el llenado de datos en el nodo SIOT, juro que la información contenida en el presente registro fue cargada en el marco de la legalidad y veracidad. De comprobarse el llenado incorrecto o la falsedad de alguno de ellos, seré sujeto a las sanciones que establece la ley. Me comprometo, en caso de que la autoridad competente lo requiera, a presentar la documentación que sustente la información generada, a efectos de su veracidad.<br/>
+                                El correcto cargado de información es de exclusiva responsabilidad del usuario habilitado. Ello en el marco de lo establecido en la Ley Nro. 1178, Ley Nro. 339 y sus normas reglamentarias, Ley Nro. 2027, de 27 de octubre de 1999, Ley Nro. 004, de 31 de marzo de 2010, Reglamento de la Responsabilidad por la Función Pública.</p>
+                                <hr/>
                                 {!! Form::open(['route' => ['solicitud.update', $solicitud->id], 'method' => 'PUT']) !!}
                                 {!! Form::hidden('estado', 'revision') !!}
                                 <p class="text-right">
                                     <button type="submit" class="btn btn-success">
-                                        Enviar Solicitud
+                                        <i class="fa fa-btn fa-send-o"></i>Enviar Solicitud
                                     </button>
                                 </p>
                                 {!! Form::close() !!}

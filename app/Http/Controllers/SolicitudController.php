@@ -101,21 +101,21 @@ class SolicitudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        /*$solicitud = Solicitud::find($id);
-        $documentosDigitales = collect();
-        foreach(DocumentoDigital::get() as $documentoDigital){
-            $id = $documentoDigital->id;
-            $descripcion = $documentoDigital->descripcion;
-            $descripcion = str_replace('[texto]', ($solicitud->tipo_limite == 'M')?$documentoDigital->texto_intra:$documentoDigital->texto_inter, $descripcion);
-            $articulo = ($solicitud->tipo_limite == 'M')?$documentoDigital->articulo_intra:$documentoDigital->articulo_inter;
-
-            $documentosDigitales->push(['id' => $id, 'descripcion' => $descripcion, 'articulo' => $articulo]);
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($id);
+                return response()->json([
+                    'solicitud' => $solicitud,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al buscar datos... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
         }
-        $documentosDigitales->sortBy('articulo');
-        $documentosDigitales->toJson();
-        return view('solicitud.edit')->with('solicitud', $solicitud)->with('documentosDigitales', $documentosDigitales);*/
     }
 
     /**
@@ -189,9 +189,6 @@ class SolicitudController extends Controller
         if ($request->ajax()){
             try{
                 $solicitud = Solicitud::find($id);
-                $solicitud->documentosSolicitud()->detach();
-                $solicitud->documentosAdicional()->detach();
-                $solicitud->documentosSubsanacion()->detach();
                 $solicitud->delete();
 
                 flash()->error('Se eliminó la solicitud de: '.$solicitud->nombre_solicitante);
@@ -209,7 +206,9 @@ class SolicitudController extends Controller
 
     public function llenarSolicitud(Request $request, $solicitudId){
         $solicitud = Solicitud::find($solicitudId);
-        $documentosFaltantes = $solicitud->documentosSolicitud()->whereNull('documento_digital_solicitud.archivo')->count();
+        $documentosFaltantes = $solicitud->documentosSolicitud()
+            ->where('opcional', '=', false)
+            ->whereNull('documento_digital_solicitud.archivo')->count();
         return view('solicitud.solicitar')->with('solicitud', $solicitud)->with('documentosFaltantes', $documentosFaltantes);
     }
 

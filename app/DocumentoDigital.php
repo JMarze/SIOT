@@ -8,7 +8,7 @@ class DocumentoDigital extends Model
 {
     protected $table = "documentos_digitales";
 
-    protected $fillable = ['descripcion', 'articulo_inter', 'articulo_intra', 'texto_inter', 'texto_intra'];
+    protected $fillable = ['descripcion', 'articulo_inter', 'articulo_intra', 'texto_inter', 'texto_intra', 'opcional'];
 
     public $timestamps = false;
 
