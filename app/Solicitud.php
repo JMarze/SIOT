@@ -22,13 +22,13 @@ class Solicitud extends Model
         return $this->belongsToMany('App\Municipio', 'solicitud_municipio', 'solicitud_id', 'municipio_codigo');
     }
     public function documentosSolicitud(){
-        return $this->belongsToMany('App\DocumentoDigital', 'documento_digital_solicitud', 'solicitud_id', 'documento_digital_id')->withPivot('cumple', 'fojas_de', 'fojas_a', 'archivo', 'estado', 'fecha', 'observaciones');
+        return $this->belongsToMany('App\DocumentoDigital', 'documento_digital_solicitud', 'solicitud_id', 'documento_digital_id')->withPivot('cumple', 'fojas_de', 'fojas_a', 'archivo', 'fecha', 'observaciones');
     }
     public function documentosAdicional(){
-        return $this->belongsToMany('App\DocumentoDigital', 'documento_digital_adicional', 'solicitud_id', 'documento_digital_id')->withPivot('cumple', 'archivo', 'estado', 'fecha', 'observaciones');
+        return $this->belongsToMany('App\DocumentoDigital', 'documento_digital_adicional', 'solicitud_id', 'documento_digital_id')->withPivot('cumple', 'archivo', 'fecha', 'observaciones');
     }
     public function documentosSubsanacion(){
-        return $this->belongsToMany('App\DocumentoDigital', 'documento_digital_subsanacion', 'solicitud_id', 'documento_digital_id')->withPivot('cumple', 'archivo', 'estado', 'fecha', 'observaciones');
+        return $this->belongsToMany('App\DocumentoDigital', 'documento_digital_subsanacion', 'solicitud_id', 'documento_digital_id')->withPivot('cumple', 'archivo', 'fecha', 'observaciones');
     }
     public function etapa_inicio(){
         return $this->hasOne('App\EtapaInicio');

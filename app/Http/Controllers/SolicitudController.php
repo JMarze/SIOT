@@ -130,7 +130,27 @@ class SolicitudController extends Controller
         try{
             $solicitud = Solicitud::find($id);
             $solicitud->fill($request->all());
-            $solicitud->user_id = $request->user()->id;
+
+            /*foreach($solicitud->documentosSolicitud() as $documento){
+            }*/
+
+            /*switch($request->estado){
+                case 'adicional':
+                    $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
+                    $solicitud->documentosAdicional()->detach($request->documento[$i]);
+                    $solicitud->documentosAdicional()->attach($request->documento[$i]);
+                    break;
+                case 'subsanacion':
+                    $solicitud->documentosAdicional()->detach($request->documento[$i]);
+                    $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
+                    $solicitud->documentosSubsanacion()->attach($request->documento[$i]);
+                    break;
+                case 'admision':
+                    $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
+                    $solicitud->documentosAdicional()->detach($request->documento[$i]);
+                    break;
+            }*/
+
             $solicitud->update();
             flash()->success('Solicitud de Autoridad: '.$solicitud->nombre_solicitante.' pasó al estado: '.$solicitud->estado.'...');
 
@@ -204,6 +224,70 @@ class SolicitudController extends Controller
         }
     }
 
+    public function getSolicitudDocumento(Request $request, $idSolicitud, $idDocumento){
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($idSolicitud);
+                $documentoDigital = $solicitud->documentosSolicitud()
+                    ->where('documento_digital_id', '=', $idDocumento)->first();
+                return response()->json([
+                    'documentoDigital' => $documentoDigital,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al buscar datos... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
+        }
+    }
+
+    public function editarSolicitudDocumento(Request $request, $idSolicitud, $idDocumento){
+        $this->validate($request, [
+            'fojas_de' => 'required|numeric|min:1',
+            'fojas_a' => 'required|numeric|min:1',
+        ]);
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($idSolicitud);
+
+                $solicitud->documentosSolicitud()->updateExistingPivot($idDocumento, ['fojas_de' => $request['fojas_de'], 'fojas_a' => $request['fojas_a'], 'fecha' => Carbon::now()]);
+                $solicitud->update();
+
+                flash()->warning('Se modificó las fojas de la solicitud de: '.$solicitud->nombre_solicitante);
+                return response()->json([
+                    'mensaje' => $solicitud->id,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al modificar las fojas... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
+        }
+    }
+
+    public function eliminarSolicitudDocumento(Request $request, $idSolicitud, $idDocumento){
+        if ($request->ajax()){
+            try{
+                $solicitud = Solicitud::find($idSolicitud);
+
+                $solicitud->documentosSolicitud()->updateExistingPivot($idDocumento, ['fojas_de' => 0, 'fojas_a' => 0, 'fecha' => null, 'archivo' => null, 'observaciones' => null]);
+                $solicitud->update();
+
+                flash()->error('Se eliminó la información de fojas y el arhivo que fué subido');
+                return response()->json([
+                    'mensaje' => $solicitud->id,
+                ]);
+            }catch(\Exception $ex){
+                flash()->error('Se presentó un problema al eliminar la información... Intenta más tarde');
+                return response()->json([
+                    'mensaje' => $ex->getMessage(),
+                ]);
+            }
+        }
+    }
+
     public function llenarSolicitud(Request $request, $solicitudId){
         $solicitud = Solicitud::find($solicitudId);
         $documentosFaltantes = $solicitud->documentosSolicitud()
@@ -250,31 +334,24 @@ class SolicitudController extends Controller
 
     public function revisarSolicitud(Request $request, $solicitudId){
         $solicitud = Solicitud::find($solicitudId);
-        $revisionesFaltantes = $solicitud->documentosSolicitud()->where('documento_digital_solicitud.estado', '=', 'revision')->count();
-        return view('solicitud.revisar')->with('solicitud', $solicitud)->with('revisionesFaltantes', $revisionesFaltantes);
+        $revisionesFaltantes = $solicitud->documentosSolicitud()
+            ->where('documento_digital_solicitud.cumple', '=', 'por revisar')
+            ->count();
+
+        return view('solicitud.revisar')
+            ->with('solicitud', $solicitud)
+            ->with('revisionesFaltantes', $revisionesFaltantes);
     }
 
     public function revisionSolicitud(Request $request, $solicitudId){
         $solicitud = Solicitud::find($solicitudId);
         for($i=0; $i<count($request->documento); $i++){
             if($request->cumple[$i] != ''){
-                $solicitud->documentosSolicitud()->updateExistingPivot($request->documento[$i], ['cumple' => $request->cumple[$i], 'estado' => $request->estado[$i], 'observaciones' => ($request->observacion[$i] != '')?$request->observacion[$i]:null]);
-                switch($request->estado[$i]){
-                    case 'adicional':
-                        $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
-                        $solicitud->documentosAdicional()->detach($request->documento[$i]);
-                        $solicitud->documentosAdicional()->attach($request->documento[$i]);
-                        break;
-                    case 'subsanacion':
-                        $solicitud->documentosAdicional()->detach($request->documento[$i]);
-                        $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
-                        $solicitud->documentosSubsanacion()->attach($request->documento[$i]);
-                        break;
-                    case 'admision':
-                        $solicitud->documentosSubsanacion()->detach($request->documento[$i]);
-                        $solicitud->documentosAdicional()->detach($request->documento[$i]);
-                        break;
-                }
+                $solicitud->documentosSolicitud()
+                    ->updateExistingPivot($request->documento[$i], [
+                        'cumple' => $request->cumple[$i],
+                        'observaciones' => ($request->observacion[$i] != '')?$request->observacion[$i]:null
+                    ]);
             }
         }
         return redirect()->route('solicitud.revisar', $solicitud->id);

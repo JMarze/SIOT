@@ -50,6 +50,11 @@ Route::group(['middleware' => 'web'], function () {
     // Upload Solicitud
     Route::put('solicitud/{solicitud}/solicitar/{documentoDigital}', 'SolicitudController@subirSolicitud')->name('solicitud.subir_solicitud');
 
+    // Editar fojas de Solicitud
+    Route::get('solicitud/{solicitud}/documento/{documentoDigital}', 'SolicitudController@getSolicitudDocumento')->name('solicitud.get_solicitud_documento');
+    Route::put('solicitud/{solicitud}/editar/{documentoDigital}', 'SolicitudController@editarSolicitudDocumento')->name('solicitud.editar_solicitud_documento');
+    Route::delete('solicitud/{solicitud}/eliminar/{documentoDigital}', 'SolicitudController@eliminarSolicitudDocumento')->name('solicitud.eliminar_solicitud_documento');
+
     // Revisión Solicitud
     Route::post('solicitud/{solicitud}/revision', 'SolicitudController@revisionSolicitud')->name('solicitud.revision');
 

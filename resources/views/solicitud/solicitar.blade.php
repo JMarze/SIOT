@@ -75,7 +75,14 @@
                             <td>{{ $documento->pivot->fojas_a }}</td>
                             <td class="text-center">
                                 @if($documento->pivot->archivo != null)
-                                <span class="label label-default">{{ $documento->pivot->archivo }}</span>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editar_solicitud_archivo" data-id="{{ $documento->id }}">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminar_solicitud_archivo" data-id="{{ $documento->id }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
                                 @else
                                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#solicitud_archivo" data-id="{{ $documento->id }}">
                                     <i class="fa fa-btn fa-upload"></i>Subir archivo (.zip)
@@ -138,6 +145,8 @@
 </div>
 
 @include('solicitud.partial.solicitud_archivo')
+@include('solicitud.partial.editar_solicitud_archivo')
+@include('solicitud.partial.eliminar_solicitud_archivo')
 
 @endsection
 
@@ -153,6 +162,48 @@
         var idDocumento = $(this).attr('data-id');
         $('#form-solicitud_archivo').attr('data-solicitud', {{ $solicitud->id }});
         $('#form-solicitud_archivo').attr('data-documento', idDocumento);
+    });
+
+    // Cambio de Id para editar la Solicitud
+    $(document).on('click', 'button[data-target="#editar_solicitud_archivo"]', function(e){
+        var idDocumento = $(this).attr('data-id');
+        var url = '{{ route('solicitud.get_solicitud_documento', [$solicitud->id, 'IDDOCUMENTO']) }}';
+        url = url.replace('IDDOCUMENTO', idDocumento);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'JSON',
+            beforeSend: function(e){
+
+            }
+        }).done(function (response){
+            $('#form-editar_solicitud_archivo #fojas_de').val(
+                response['documentoDigital']['pivot']['fojas_de']
+            );
+            $('#form-editar_solicitud_archivo #fojas_a').val(
+                response['documentoDigital']['pivot']['fojas_a']
+            );
+            $('#form-editar_solicitud_archivo').attr('data-solicitud', {{ $solicitud->id }});
+            $('#form-editar_solicitud_archivo').attr('data-documento', idDocumento);
+        });
+    });
+
+    // Cambio de Id para eliminar la Solicitud
+    $(document).on('click', 'button[data-target="#eliminar_solicitud_archivo"]', function(e){
+        var idDocumento = $(this).attr('data-id');
+        var url = '{{ route('solicitud.get_solicitud_documento', [$solicitud->id, 'IDDOCUMENTO']) }}';
+        url = url.replace('IDDOCUMENTO', idDocumento);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'JSON',
+            beforeSend: function(e){
+
+            }
+        }).done(function (response){
+            $('#form-eliminar_solicitud_archivo').attr('data-solicitud', {{ $solicitud->id }});
+            $('#form-eliminar_solicitud_archivo').attr('data-documento', idDocumento);
+        });
     });
 
     // Reset Form

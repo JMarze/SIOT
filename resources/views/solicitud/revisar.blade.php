@@ -45,7 +45,6 @@
                             <th rowspan="2" style="text-align:center;vertical-align:middle;">Archivos (.zip)</th>
                             <th rowspan="2" style="text-align:center;vertical-align:middle;">Observaciones</th>
                             <th rowspan="2" style="text-align:center;vertical-align:middle;">¿Cumple?</th>
-                            <th rowspan="2" style="text-align:center;vertical-align:middle;">Estado</th>
                         </tr>
                         <tr>
                             <th style="text-align:center;">De</th>
@@ -64,14 +63,12 @@
                         @foreach($solicitud->documentosSolicitud->sortBy($orden) as $documento)
                         {!! Form::hidden('documento[]', $documento->id) !!}
 
-                        @if($documento->pivot->estado == 'adicional')
-                        <tr class="info">
-                        @elseif($documento->pivot->estado == 'subsanacion')
-                        <tr class="warning">
-                        @elseif($documento->pivot->estado == 'admision')
+                        @if($documento->pivot->cumple == 'si')
                         <tr class="success">
-                        @elseif($documento->pivot->cumple == 'no corresponde')
+                        @elseif($documento->pivot->cumple == 'no')
                         <tr class="danger">
+                        @elseif($documento->pivot->cumple == 'no corresponde')
+                        <tr class="warning">
                         @else
                         <tr>
                         @endif
@@ -85,18 +82,19 @@
                             <td>{{ $documento->pivot->fojas_de }}</td>
                             <td>{{ $documento->pivot->fojas_a }}</td>
                             <td class="text-center">
+                                @if($documento->pivot->archivo != null)
                                 <a href="{{ route('solicitud.descargar', [$solicitud->id, $documento->pivot->archivo]) }}" class="btn btn-default">
                                     <i class="fa fa-btn fa-download"></i>Descargar
                                 </a>
+                                @else
+                                <span class="label label-default">El archivo no fué subido</span>
+                                @endif
                             </td>
                             <td>
-                                {!! Form::textarea('observacion[]', $documento->pivot->observaciones, ['class' => 'form-control', 'style' => 'height:50px;width:150px;']) !!}
+                                {!! Form::textarea('observacion[]', $documento->pivot->observaciones, ['class' => 'form-control', 'style' => 'height:80px;width:250px;']) !!}
                             </td>
                             <td>
                                 {!! Form::select('cumple[]', ['si' => 'Cumple', 'no' => 'No cumple', 'no corresponde' => 'No corresponde'], $documento->pivot->cumple, ['class' => 'form-control', 'placeholder' => '-']) !!}
-                            </td>
-                            <td>
-                                {!! Form::select('estado[]', ['adicional' => 'Adicional', 'subsanacion' => 'Subsanación', 'admision' => 'Admisión'], $documento->pivot->estado, ['class' => 'form-control', 'placeholder' => '-']) !!}
                             </td>
                         </tr>
                         @endforeach
