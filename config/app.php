@@ -160,6 +160,8 @@ return [
 
         Laracasts\Flash\FlashServiceProvider::class,
 
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -210,6 +212,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         'Flash' => Laracasts\Flash\Flash::class,
+
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

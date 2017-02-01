@@ -78,6 +78,10 @@
                                 @else
                                 <strong>{{ $documento->articulo_inter }}</strong> {{ str_replace("[texto]", $documento->texto_inter, $documento->descripcion) }}
                                 @endif
+
+                                @if($documento->opcional)
+                                <i>&nbsp;(Opcional)</i>
+                                @endif
                             </td>
                             <td>{{ $documento->pivot->fojas_de }}</td>
                             <td>{{ $documento->pivot->fojas_a }}</td>
@@ -125,6 +129,8 @@
 
                                 <p class="text-right">
                                     {!! Form::select('estado', ['adicional' => 'Se requiere información adicional para algunos archivos', 'subsanacion' => 'Se requiere subsanación para algunos archivos', 'admision' => 'Solicitud admitida, se generará el código único'], null, ['class' => 'form-control', 'placeholder' => 'Seleccione estado de la solicitud']) !!}
+                                    <br/>
+                                    <i>* Posteriormente deberá subir el Informe técnico legal y la Nota de Admisión o Subsanación, si corresponde.</i>
                                     <br/>
                                     <button class="btn btn-success">
                                         <i class="fa fa-btn fa-save"></i>Terminar revisión

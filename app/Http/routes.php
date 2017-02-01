@@ -62,4 +62,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('etapa_inicio', 'EtapaInicioController');
     Route::get('etapa_inicio/{solicitud}/descargar_solicitante', 'EtapaInicioController@descargarSolicitante')->name('etapa_inicio.descargar_solicitante');
     Route::get('etapa_inicio/{solicitud}/descargar_tecnico', 'EtapaInicioController@descargarTecnico')->name('etapa_inicio.descargar_tecnico');
+
+    // PDF Registro
+    Route::get('pdf/registro/{codigoEtapaInicio}', 'PdfController@registro')->name('pdf.registro');
 });

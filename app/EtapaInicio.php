@@ -27,6 +27,6 @@ class EtapaInicio extends Model
 
     // Relationships
     public function solicitud(){
-        return $this->hasOne('App\Solicitud');
+        return $this->hasOne('App\Solicitud', 'id', 'solicitud_id');
     }
 }

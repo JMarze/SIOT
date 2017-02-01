@@ -183,7 +183,7 @@ class SolicitudController extends Controller
                         $correlativo = $numeral->numero;
                         break;
                 }
-                $codigo = $dia . $mes . $anio . "-MA.VAICOT.DGLOTAR-" . $solicitud->tipo_limite . "-" . $correlativo . "/" . $numeral->año;
+                $codigo = $dia . $mes . $anio . "-MA.VAICOT.DGLOTAR-" . $solicitud->tipo_limite . "-" . $correlativo . "-" . $numeral->año;
 
                 $etapaInicio = new EtapaInicio();
                 $etapaInicio->codigo = $codigo;

@@ -131,6 +131,12 @@
                                             </a>
                                         </div>
                                     @endif
+                                @elseif($solicitud->estado == 'admisión')
+                                <div class="col-md-10 col-md-offset-1">
+                                    <a href="{{ route('pdf.registro', $solicitud->etapa_inicio->codigo) }}" type="button" class="btn btn-default btn-block">
+                                        <i class="fa fa-btn fa-file-pdf-o"></i>Reporte
+                                    </a>
+                                </div>
                                 @elseif($solicitud->estado == 'revision')
                                 <div class="col-md-12 text-center">
                                     Solicitud enviada el {{ $solicitud->updated_at->format('d/m/Y') }}, se necesitan: <br/>
